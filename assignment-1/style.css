@@ -102,6 +102,12 @@ a {
   background-color: white;
 }
 /* btn */
+#btn-delete-confirm {
+  color: var(--border-color);
+}
+#btn-delete-confirm:hover {
+  color: var(--red-color);
+}
 .btn {
   cursor: pointer;
   border: none;
