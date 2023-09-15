@@ -206,7 +206,7 @@ option {
   cursor: pointer;
 }
 #Capa_1:hover {
-  fill: var(--red-color);
+  fill: var(--red-color) !important;
 }
 /* ///////////////////////////////////// */
 /* base css */
