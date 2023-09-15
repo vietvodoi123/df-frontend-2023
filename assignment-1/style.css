@@ -88,7 +88,7 @@ td:last-child,
 th:last-child {
   width: 15%;
 }
-#btn-delete {
+a {
   color: var(--red-color);
 }
 
@@ -135,7 +135,7 @@ th:last-child {
 
 /* modal */
 .modal {
-  top: 120%;
+  top: 90%;
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: white;
