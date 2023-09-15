@@ -93,12 +93,12 @@ addFormElm.addEventListener("submit", (e) => {
   }
   if (ok && ok1) {
     data = [
-      ...data,
       {
         name: nameInputValue,
         author: authorInputValue,
         topic: selectInputValue,
       },
+      ...data,
     ];
     saveToLocalStorage("myBooks", data);
     render();

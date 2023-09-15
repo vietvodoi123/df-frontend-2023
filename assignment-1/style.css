@@ -135,13 +135,15 @@ a {
 
 /* modal */
 .modal {
-  top: 90%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  height: max-content;
+  top: 30%;
+  left: 35%;
+
   background-color: white;
   padding: 30px 20px;
   width: 450px;
   z-index: 3;
+  animation: fadeIn 0.5s ease-in;
 }
 
 .modal header {
@@ -199,6 +201,17 @@ option {
 
 /* ///////////////////////////////////// */
 /* base css */
+/* animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
 
 /* flex */
 .flex {
