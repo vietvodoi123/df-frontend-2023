@@ -141,9 +141,8 @@ a {
 
 /* modal */
 .modal {
-  height: max-content;
   top: 30%;
-  left: 35%;
+  left: calc(50% - 225px);
 
   background-color: white;
   padding: 30px 20px;
@@ -152,7 +151,12 @@ a {
   z-index: 3;
   animation: fadeIn 0.5s ease-in;
 }
-
+#delete-modal {
+  height: 270px;
+}
+#addmodal {
+  height: 500px;
+}
 .modal header {
   margin-bottom: 40px;
 }
