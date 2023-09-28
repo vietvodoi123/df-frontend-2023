@@ -112,7 +112,9 @@ a {
 /* /////////////// */
 /* UI */
 /* btn */
-
+#close-button {
+  color: var(--text);
+}
 .page-btn {
   padding: 5px 10px;
 }
