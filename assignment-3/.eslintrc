@@ -19,7 +19,10 @@
     "createDefaultProgram": true,
     "sourceType": "module"
   },
-  "rules": {},
+  "rules": {
+    "jsx-a11y/label-has-for": "off",
+    "jsx-a11y/label-has-associated-control": "warn"
+  },
   "overrides": [
     {
       "files": ["**/*.ts?(x)", "**/*.js?(x)"],
