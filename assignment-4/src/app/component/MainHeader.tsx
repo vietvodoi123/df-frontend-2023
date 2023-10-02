@@ -1,4 +1,5 @@
 'use client'
+
 import React from 'react'
 import { useBookContext } from '../context/bookContext'
 import { useModal } from '../context/modalContext'
@@ -6,7 +7,7 @@ import { useModal } from '../context/modalContext'
 const MainHeader = () => {
   const { filterBooks } = useBookContext()
   const { openCreateModal } = useModal()
-  const searchBooks = (e: any) => {
+  const searchBooks = (e: React.ChangeEvent<HTMLInputElement>) => {
     filterBooks(e.target.value)
   }
 
@@ -22,8 +23,7 @@ const MainHeader = () => {
       />
       <button
         onClick={() => {
-          console.log('open create')
-          openCreateModal(true)
+          openCreateModal()
         }}
         type="button"
         id="btn-add-book"

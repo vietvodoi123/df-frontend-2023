@@ -39,9 +39,7 @@ const CreateModal: React.FC<CreateModalProps> = ({ closeModal }) => {
     const topic = topicRef.current?.value || ''
 
     const check = validate(name, author)
-    if (check.name || check.author) {
-      console.log('name or author invalid')
-    } else {
+    if (!check.name && !check.author) {
       addBook({ name, author, topic })
       closeModal()
     }

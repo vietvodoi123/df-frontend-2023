@@ -12,8 +12,8 @@ interface Modal {
   create: boolean
   del: boolean
   closeModal: () => void
-  openCreateModal: (value: boolean) => void
-  openDeleteModal: (value: boolean) => void
+  openCreateModal: () => void
+  openDeleteModal: () => void
 }
 
 const ModalContext = createContext<Modal | undefined>(undefined)
@@ -44,8 +44,8 @@ export function ModalProvider({ children }: { children: React.ReactNode }) {
 
   const memoizedValue: Modal = useMemo(
     () => ({
-      create: create,
-      del: del,
+      create,
+      del,
       closeModal,
       openCreateModal,
       openDeleteModal,

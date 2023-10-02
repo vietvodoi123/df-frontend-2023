@@ -1,18 +1,13 @@
 'use client'
+
 import React from 'react'
-import { useTheme } from './context/themeContext'
 
-type Props = {}
-
-function loading({}: Props) {
-  const { colorMode } = useTheme()
+function loading() {
   return (
     <div className="loading w-[100px] h-[100px] bg-transparent flex justify-center items-center mt-[130px]">
-      <div
-        className={`border-solid border-[5px] border-${
-          colorMode === 'light' ? 'primary' : 'white'
-        } rounded-full `}
-      ></div>
+      <div className="border-solid border-[5px] border-primary rounded-full border-l-transparent animate-spin text-transparent">
+        loading
+      </div>
     </div>
   )
 }

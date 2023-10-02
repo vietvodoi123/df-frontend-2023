@@ -1,10 +1,9 @@
 'use client'
-import { useRouter } from 'next/navigation'
+
+import Link from 'next/link'
+import { AiOutlineLeft } from 'react-icons/ai'
 import { useBookContext } from '../../context/bookContext'
 import { useModal } from '../../context/modalContext'
-import { AiOutlineLeft } from 'react-icons/ai'
-import Link from 'next/link'
-import type { Metadata } from 'next'
 
 // export function generateMetadata({
 //   params,
@@ -44,7 +43,7 @@ function Page({ params }: { params: { bookId: string } }) {
           Page not Found
         </h1>
 
-        <Link className="text-primary font-bold flex items-center" href={'/'}>
+        <Link className="text-primary font-bold flex items-center" href="/">
           <AiOutlineLeft className="font-bold" />
           Back to Home page
         </Link>
@@ -54,7 +53,7 @@ function Page({ params }: { params: { bookId: string } }) {
 
   function onDelete() {
     if (book) {
-      openDeleteModal(true)
+      openDeleteModal()
       setNameBookDelete(book.name)
     }
   }
@@ -62,7 +61,7 @@ function Page({ params }: { params: { bookId: string } }) {
   return (
     <div className=" px-p50 mt-m30 leading-[1.5]">
       <Link
-        href={'/'}
+        href="/"
         className=" text-primary font-bold flex  items-center mb-m30"
       >
         <AiOutlineLeft className="font-bold" /> <span className="">Back</span>

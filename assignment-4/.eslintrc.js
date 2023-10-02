@@ -10,9 +10,7 @@ module.exports = {
     'next',
     'next/core-web-vitals',
   ],
-  ignorePatterns: [
-    'node_modules/',
-  ],
+  ignorePatterns: ['node_modules/'],
   env: {
     es6: true,
     browser: true,
@@ -47,4 +45,9 @@ module.exports = {
       },
     },
   ],
+
+  plugins: ['prettier'],
+  rules: {
+    'prettier/prettier': ['error', { endOfLine: 'auto' }],
+  },
 }

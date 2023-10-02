@@ -1,4 +1,5 @@
 'use client'
+
 import React, {
   createContext,
   useCallback,
@@ -81,7 +82,7 @@ export function BookProvider({ children }: { children: React.ReactNode }) {
       // Cập nhật cả filteredBooks
       setFilteredBooks(updatedBooks)
     },
-    [books],
+    [books, setCount, count],
   )
 
   const removeBook = useCallback(
@@ -114,7 +115,7 @@ export function BookProvider({ children }: { children: React.ReactNode }) {
       filterBooks,
       count,
     }),
-    [filteredBooks, addBook, nameBookDelete, removeBook, filterBooks],
+    [filteredBooks, addBook, nameBookDelete, removeBook, filterBooks, count],
   )
   return (
     <BookContext.Provider value={contextValue}>{children}</BookContext.Provider>

@@ -6,11 +6,8 @@ import CreateModal from './ui/CreateModal'
 import DeleteModal from './ui/DeleteModal'
 import { useModal } from '../context/modalContext'
 
-type Props = {}
-
-function ModalControl({}: Props) {
-  const { create, del, openCreateModal, openDeleteModal, closeModal } =
-    useModal()
+function ModalControl() {
+  const { create, del, closeModal } = useModal()
   return (
     <>
       {(create || del) && <Backdrop closeModal={closeModal} />}
