@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import { useRouter } from 'next/navigation'
 import { useBookContext } from '../../context/bookContext'
 
 interface DeleteModalProps {
@@ -8,6 +9,7 @@ interface DeleteModalProps {
 }
 
 const DeleteModal: React.FC<DeleteModalProps> = ({ closeModal }) => {
+  const router = useRouter()
   const { nameBookDelete, removeBook } = useBookContext()
 
   return (
@@ -43,6 +45,7 @@ const DeleteModal: React.FC<DeleteModalProps> = ({ closeModal }) => {
           onClick={() => {
             removeBook(nameBookDelete)
             closeModal()
+            router.push('/')
           }}
           id="btn-delete-confirm"
           className="btn "
