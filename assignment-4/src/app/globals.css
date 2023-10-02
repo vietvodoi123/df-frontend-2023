@@ -3,25 +3,131 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+  --text: '#343a40';
+  --bgColor: '#adb5bd';
+  --backgroundElm: '#fff';
+  --border: '#adb5bd';
+  --primary: #e64980;
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  box-sizing: border-box;
+  line-height: 1.5;
+  color: var(--text);
+  background-color: var(--bgColor);
+}
+/* header */
+.nav-list {
+  background-color: var(--backgroundElm);
+  border-bottom: 2px solid var(--border);
+}
+.toggle-btn {
+  background-color: var(--bgColor);
+}
+
+/* main heaeder */
+.header-input {
+  background-color: var(--backgroundElm);
+  padding: 10px;
+  width: 20%;
+}
+
+/* ui dung chung */
+.border-2px-solid {
+  @apply border-[2px] border-solid;
+  border-color: var(--border);
+}
+.border-2px-solid-bot {
+  @apply border-[2px] border-solid border-border;
+}
+
+#add-modal,
+#delete-modal {
+  background-color: var(--backgroundElm);
+}
+
+.btn {
+  cursor: pointer;
+  border: none;
+  font-size: 16px;
+  background-color: var(--backgroundElm);
+  font-weight: bold;
+}
+label {
+  margin-bottom: 5px;
+  font-size: 18px;
+  width: 100%;
+}
+input {
+  color: var(--text);
+  border-radius: 5px;
+}
+input:focus,
+select:focus {
+  outline-color: var(--primary);
+}
+.btn-red {
+  background-color: var(--primary) !important;
+  padding: 8px 20px;
+
+  color: white;
+
+  border-radius: 5px;
+}
+.btn:hover,
+.btn:active {
+  transform: scale(1.05);
+  opacity: 0.95;
+}
+#btn-delete-confirm {
+  color: var(--border);
+}
+#btn-delete-confirm:hover {
+  color: var(--primary);
+}
+.page-button {
+  background-color: var(--backgroundElm);
+  @apply border-[2px] border-solid;
+  border-color: var(--border);
+}
+.active {
+  background-color: var(--primary) !important;
+  color: white !important;
+}
+.error-msg {
+  color: var(--primary);
+  font-size: 14px;
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+}
+
+/* table */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: var(--backgroundElm);
+}
+
+td,
+th {
+  text-align: start;
+  padding: 10px;
+  border: 2px solid var(--border);
+}
+td:first-child,
+th:first-child {
+  width: 45%;
+}
+td:nth-child(2),
+th:nth-child(2) {
+  width: 20%;
+}
+td:nth-child(3),
+th:nth-child(3) {
+  width: 20%;
+}
+td:last-child,
+th:last-child {
+  width: 15%;
 }

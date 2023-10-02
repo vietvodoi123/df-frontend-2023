@@ -19,9 +19,12 @@
   "dependencies": {
     "next": "^13.5.3",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-icons": "^4.11.0"
   },
   "devDependencies": {
+    "@commitlint/cli": "^17.7.2",
+    "@commitlint/config-conventional": "^17.7.0",
     "@dwarvesf/react-eslint-config": "^1.0.1",
     "@next/eslint-plugin-next": "^13.5.3",
     "@types/node": "^20.7.0",
