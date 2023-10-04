@@ -5,27 +5,6 @@ import { AiOutlineLeft } from 'react-icons/ai'
 import { useBookContext } from '../../context/bookContext'
 import { useModal } from '../../context/modalContext'
 
-// export function generateMetadata({
-//   params,
-// }: {
-//   params: { bookId: string }
-// }): Metadata {
-//   const { books } = useBookContext()
-//   // Lấy id sách từ URL
-//   const id = params.bookId[0]
-
-//   // Kiểm tra xem bookId có tồn tại trong danh sách sách hay không
-//   const book = books.find((book) => book.id === id)
-//   if (!book) {
-//     return {
-//       title: 'Not Found ',
-//     }
-//   }
-//   return {
-//     title: book.name,
-//   }
-// }
-
 function Page({ params }: { params: { bookId: string } }) {
   const { books, setNameBookDelete } = useBookContext()
   const { openDeleteModal } = useModal()

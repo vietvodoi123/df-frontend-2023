@@ -137,22 +137,14 @@ export function BookProvider({ children }: { children: React.ReactNode }) {
       setFilteredBooks(sliceBooks(filtered))
       router.push(`${pathName}?${createQueryString('term', filterTerm || '')}`)
     },
-    [books, createQueryString, pathName, router, sliceBooks],
+    [books],
   )
 
   useEffect(() => {
     setFilteredBooks(sliceBooks(books))
     const term = searchParams.get('term')
     router.push(`${pathName}?${createQueryString('term', term || '')}`)
-  }, [
-    curentPage,
-    books,
-    sliceBooks,
-    createQueryString,
-    pathName,
-    router,
-    searchParams,
-  ])
+  }, [books, sliceBooks])
 
   // Sử dụng useMemo để tránh thay đổi giá trị của context mỗi lần render
   const contextValue = useMemo(
