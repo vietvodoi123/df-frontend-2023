@@ -1,12 +1,14 @@
 'use client'
 
 import React from 'react'
+
 import { useBookContext } from '../context/bookContext'
 import { useModal } from '../context/modalContext'
 
 const MainHeader = () => {
   const { filterBooks } = useBookContext()
   const { openCreateModal } = useModal()
+
   const searchBooks = (e: React.ChangeEvent<HTMLInputElement>) => {
     filterBooks(e.target.value)
   }

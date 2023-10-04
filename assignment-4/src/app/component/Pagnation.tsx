@@ -4,7 +4,7 @@ import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai'
 interface PaginationProps {
   currentPage: number
   page: number
-  setCurrentPage: React.Dispatch<React.SetStateAction<number>>
+  setCurrentPage: (value: number) => void
 }
 
 const Pagination: React.FC<PaginationProps> = ({

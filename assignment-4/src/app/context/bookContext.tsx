@@ -8,6 +8,7 @@ import React, {
   useMemo,
   useState,
 } from 'react'
+import { usePathname, useSearchParams, useRouter } from 'next/navigation'
 import {
   getFromLocalStorage,
   saveToLocalStorage,
@@ -36,7 +37,9 @@ export interface BookContextType {
   setNameBookDelete: (name: string) => void
   removeBook: (bookName: string) => void
   filterBooks: (filterTerm: string) => void
-  count: number
+  curentPage: number
+  page: number
+  setCurrentPage: (value: number) => void
 }
 
 const BookContext = createContext<BookContextType | undefined>(undefined)
@@ -50,10 +53,31 @@ export function useBookContext(): BookContextType {
 }
 
 export function BookProvider({ children }: { children: React.ReactNode }) {
+  const cnt = 5
+  const router = useRouter()
   const [books, setBooks] = useState<IBook[]>(DATA)
   const [count, setCount] = useState(DATA.length)
   const [filteredBooks, setFilteredBooks] = useState<IBook[]>(DATA)
   const [nameBookDelete, setNameBookDelete] = useState<string>('')
+  const [curentPage, setCurrentPage] = useState<number>(1)
+  const [page, setPage] = useState<number>(Math.floor(DATA.length / cnt) + 1)
+  const pathName = usePathname()
+  const searchParams = useSearchParams()
+
+  const sliceBooks = useCallback(
+    (array: IBook[]) => {
+      return array.slice((curentPage - 1) * cnt, curentPage * cnt)
+    },
+    [curentPage],
+  )
+
+  const calcPage = (length: number) => {
+    if (length > cnt) {
+      setPage(Math.floor(length / cnt) + 1)
+    } else {
+      setPage(1)
+    }
+  }
 
   useEffect(() => {
     // Lấy dữ liệu từ localStorage khi component được mount
@@ -62,6 +86,7 @@ export function BookProvider({ children }: { children: React.ReactNode }) {
       setBooks(storedBooks)
       setFilteredBooks(storedBooks)
       setCount(storedBooks.length)
+      calcPage(storedBooks.length)
     } else {
       saveToLocalStorage('books', DATA)
     }
@@ -70,7 +95,9 @@ export function BookProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     // Lưu danh sách sách vào localStorage khi có sự thay đổi
     saveToLocalStorage('books', books)
-  }, [books])
+    calcPage(books.length)
+    setFilteredBooks(sliceBooks(books))
+  }, [books, sliceBooks])
 
   const addBook = useCallback(
     (newBook: IBook) => {
@@ -79,8 +106,6 @@ export function BookProvider({ children }: { children: React.ReactNode }) {
       const updatedBooks = [newBook, ...books]
       setBooks(updatedBooks)
       setCount(count + 1)
-      // Cập nhật cả filteredBooks
-      setFilteredBooks(updatedBooks)
     },
     [books, setCount, count],
   )
@@ -89,9 +114,18 @@ export function BookProvider({ children }: { children: React.ReactNode }) {
     (bookName: string) => {
       const updatedBooks = books.filter((book) => book.name !== bookName)
       setBooks(updatedBooks)
-      setFilteredBooks(updatedBooks)
     },
     [books],
+  )
+
+  const createQueryString = useCallback(
+    (term: string, value: string) => {
+      const params = new URLSearchParams(searchParams)
+      params.set(term, value)
+      params.set('page', curentPage.toString())
+      return params.toString()
+    },
+    [searchParams, curentPage],
   )
 
   const filterBooks = useCallback(
@@ -99,10 +133,26 @@ export function BookProvider({ children }: { children: React.ReactNode }) {
       const filtered = books.filter((book) =>
         book.name.toLowerCase().includes(filterTerm.toLowerCase()),
       )
-      setFilteredBooks(filtered)
+      calcPage(filtered.length)
+      setFilteredBooks(sliceBooks(filtered))
+      router.push(`${pathName}?${createQueryString('term', filterTerm || '')}`)
     },
-    [books],
+    [books, createQueryString, pathName, router, sliceBooks],
   )
+
+  useEffect(() => {
+    setFilteredBooks(sliceBooks(books))
+    const term = searchParams.get('term')
+    router.push(`${pathName}?${createQueryString('term', term || '')}`)
+  }, [
+    curentPage,
+    books,
+    sliceBooks,
+    createQueryString,
+    pathName,
+    router,
+    searchParams,
+  ])
 
   // Sử dụng useMemo để tránh thay đổi giá trị của context mỗi lần render
   const contextValue = useMemo(
@@ -113,9 +163,19 @@ export function BookProvider({ children }: { children: React.ReactNode }) {
       setNameBookDelete,
       removeBook,
       filterBooks,
-      count,
+      curentPage,
+      page,
+      setCurrentPage,
     }),
-    [filteredBooks, addBook, nameBookDelete, removeBook, filterBooks, count],
+    [
+      filteredBooks,
+      addBook,
+      nameBookDelete,
+      removeBook,
+      filterBooks,
+      page,
+      curentPage,
+    ],
   )
   return (
     <BookContext.Provider value={contextValue}>{children}</BookContext.Provider>

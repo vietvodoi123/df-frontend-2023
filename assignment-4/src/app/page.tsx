@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { useRouter } from 'next/navigation'
 import MainHeader from './component/MainHeader'
 import { useBookContext } from './context/bookContext'
@@ -9,22 +9,10 @@ import { useModal } from './context/modalContext'
 
 export default function Home() {
   const router = useRouter()
-  const { books, setNameBookDelete } = useBookContext()
+  const { books, setNameBookDelete, curentPage, page, setCurrentPage } =
+    useBookContext()
   const { openDeleteModal } = useModal()
-  const [page, setPage] = useState<number>(0)
-  const [currentPage, setCurrentPage] = useState<number>(1)
-  useEffect(() => {
-    const len = books.length
-    let newPage: number = 0
 
-    if (len > 0) {
-      newPage = len % 5 === 0 ? len / 5 : Math.floor(len / 5) + 1
-    }
-
-    setPage(newPage)
-  }, [books])
-
-  const data = books.slice((currentPage - 1) * 5, currentPage * 5)
   return (
     <main className="px-[50px]">
       <MainHeader />
@@ -39,7 +27,7 @@ export default function Home() {
             </tr>
           </thead>
           <tbody id="tbody">
-            {data.map((item, i) => (
+            {books.map((item, i) => (
               <tr key={i}>
                 <td>{item.name}</td>
                 <td>{item.author}</td>
@@ -72,7 +60,7 @@ export default function Home() {
           </p>
         ) : (
           <Pagnation
-            currentPage={currentPage}
+            currentPage={curentPage}
             setCurrentPage={setCurrentPage}
             page={page}
           />
