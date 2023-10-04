@@ -54,7 +54,7 @@ export default function Home() {
           </tbody>
         </table>
 
-        {page === 0 ? (
+        {books.length === 0 ? (
           <p className=" text-center p-p10 border-t-none border-2px-solid">
             Not found book
           </p>
