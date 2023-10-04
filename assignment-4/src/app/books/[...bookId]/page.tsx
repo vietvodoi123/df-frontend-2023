@@ -1,11 +1,13 @@
 'use client'
 
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { AiOutlineLeft } from 'react-icons/ai'
 import { useBookContext } from '../../context/bookContext'
 import { useModal } from '../../context/modalContext'
 
 function Page({ params }: { params: { bookId: string } }) {
+  const router = useRouter()
   const { books, setNameBookDelete } = useBookContext()
   const { openDeleteModal } = useModal()
 
@@ -15,19 +17,7 @@ function Page({ params }: { params: { bookId: string } }) {
   // Kiểm tra xem bookId có tồn tại trong danh sách sách hay không
   const book = books.find((book) => book.id === id)
   if (!book) {
-    return (
-      <div className="flex justify-center items-center flex-col mt-[130px]">
-        <h1 className=" font-bold text-center mb-m30">
-          <p className=" text-[72px]">404</p>
-          Page not Found
-        </h1>
-
-        <Link className="text-primary font-bold flex items-center" href="/">
-          <AiOutlineLeft className="font-bold" />
-          Back to Home page
-        </Link>
-      </div>
-    )
+    return router.push('/')
   }
 
   function onDelete() {

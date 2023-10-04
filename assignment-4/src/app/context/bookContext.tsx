@@ -114,6 +114,7 @@ export function BookProvider({ children }: { children: React.ReactNode }) {
     (bookName: string) => {
       const updatedBooks = books.filter((book) => book.name !== bookName)
       setBooks(updatedBooks)
+      router.push('/')
     },
     [books],
   )
