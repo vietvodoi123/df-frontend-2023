@@ -1,17 +1,33 @@
 'use client'
 
 import React from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { usePathname, useSearchParams, useRouter } from 'next/navigation'
 import ButtonPrimary from '../ui/ButtonPrimary'
 import InputElm from '../ui/InputElm'
 import { setCreate } from '../store/slice/modalSlice'
 import { filteredBooks } from '../store/slice/booksSlice'
+import { IRootState } from '../store/store'
 
 const MainHeader = () => {
+  const router = useRouter()
   const dispatch = useDispatch()
+  const pathName = usePathname()
+  const searchParams = useSearchParams()
+  const curentPage = useSelector((state: IRootState) => state.books.currentPage)
+
+  const createQueryString = (term: string, value: string) => {
+    const params = new URLSearchParams(searchParams)
+    params.set(term, value)
+    params.set('page', curentPage.toString())
+    return params.toString()
+  }
 
   const searchBooks = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(filteredBooks(e.target.value))
+    router.push(
+      `${pathName}?${createQueryString('term', e.target.value || '')}`,
+    )
   }
 
   return (
