@@ -84,7 +84,6 @@ const Register = ({ setTab }: { setTab: (value: number) => void }) => {
         handleChange,
         isSubmitting,
         handleSubmit,
-        touched,
         errors,
       }): JSX.Element => (
         <form
