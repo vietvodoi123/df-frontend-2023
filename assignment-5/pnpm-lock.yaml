@@ -32,6 +32,9 @@ dependencies:
   yup:
     specifier: ^1.3.2
     version: 1.3.2
+  zxcvbn:
+    specifier: ^4.4.2
+    version: 4.4.2
 
 devDependencies:
   '@commitlint/cli':
@@ -55,6 +58,9 @@ devDependencies:
   '@types/react-dom':
     specifier: ^18
     version: 18.2.8
+  '@types/zxcvbn':
+    specifier: ^4.4.2
+    version: 4.4.2
   autoprefixer:
     specifier: ^10
     version: 10.4.16(postcss@8.4.31)
@@ -732,6 +738,10 @@ packages:
   /@types/use-sync-external-store@0.0.3:
     resolution: {integrity: sha512-EwmlvuaxPNej9+T4v5AuBPJa2x2UOJVdjCtDHgcDqitUeOtjnJKJ+apYjVcAoBEMjKW1VVFGZLUb5+qqa09XFA==}
     dev: false
+
+  /@types/zxcvbn@4.4.2:
+    resolution: {integrity: sha512-T7SEL8b/eN7AEhHQ8oFt7c6Y+l3p8OpH7KwJIe+5oBOPLMMioPeMsUTB3huNgEnXhiittV8Ohdw21Jg8E/f70Q==}
+    dev: true
 
   /@typescript-eslint/eslint-plugin@6.7.4(@typescript-eslint/parser@6.7.4)(eslint@8.50.0)(typescript@5.2.2):
     resolution: {integrity: sha512-DAbgDXwtX+pDkAHwiGhqP3zWUGpW49B7eqmgpPtg+BKJXwdct79ut9+ifqOFPJGClGKSHXn2PTBatCnldJRUoA==}
@@ -4409,4 +4419,8 @@ packages:
       tiny-case: 1.0.3
       toposort: 2.0.2
       type-fest: 2.19.0
+    dev: false
+
+  /zxcvbn@4.4.2:
+    resolution: {integrity: sha512-Bq0B+ixT/DMyG8kgX2xWcI5jUvCwqrMxSFam7m0lAf78nf04hv6lNCsyLYdyYTrCVMqNDY/206K7eExYCeSyUQ==}
     dev: false

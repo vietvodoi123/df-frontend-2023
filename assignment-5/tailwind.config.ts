@@ -65,6 +65,7 @@ const config: Config = {
         m40: '40px',
         m48: '48px',
         m50: '50px',
+        m60: '60px',
         m80: '80px',
       },
       fontSize: {

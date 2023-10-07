@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import zxcvbn from 'zxcvbn'
 import * as yup from 'yup'
 import { Formik } from 'formik'
 import InputElm from '@/app/ui/InputElm'
@@ -8,6 +9,24 @@ import ButtonPrimary from '@/app/ui/ButtonPrimary'
 import { AiOutlineLoading3Quarters } from 'react-icons/ai'
 
 const Register = ({ setTab }: { setTab: (value: number) => void }) => {
+  const checkPasswordStrength = (password: string): string => {
+    const result = zxcvbn(password)
+    // Trả về đánh giá mức độ mật khẩu từ 0 đến 4 (0 là yếu, 4 là mạnh)
+    if (result.score === 0) {
+      return 'Rất yếu'
+    }
+    if (result.score === 1) {
+      return 'Yếu'
+    }
+    if (result.score === 2) {
+      return 'Trung bình'
+    }
+    if (result.score === 3) {
+      return 'Mạnh'
+    }
+    return 'Rất mạnh'
+  }
+
   const schema = yup.object().shape({
     confirmPass: yup
       .string()
@@ -65,6 +84,7 @@ const Register = ({ setTab }: { setTab: (value: number) => void }) => {
         handleChange,
         isSubmitting,
         handleSubmit,
+        touched,
         errors,
       }): JSX.Element => (
         <form
@@ -103,7 +123,7 @@ const Register = ({ setTab }: { setTab: (value: number) => void }) => {
                 </div>
               )}
             </div>
-            <div className="relative mb-m50 ">
+            <div className="relative mb-m60 ">
               <InputElm
                 value={values.password}
                 name="password"
@@ -111,11 +131,13 @@ const Register = ({ setTab }: { setTab: (value: number) => void }) => {
                 error={errors.password}
                 type="password"
               />
-              {errors.password && (
-                <div className="absolute bottom-[-30px] left-[20px] text-primary text-fs14">
-                  {errors.password}
+
+              <div className=" flex justify-between items-center absolute bottom-[-43px] left-[20px] text-primary text-fs14 w-[380px]">
+                {errors.password && <div>{errors.password}</div>}
+                <div className="ml-auto">
+                  Mức độ mật khẩu: {checkPasswordStrength(values.password)}
                 </div>
-              )}
+              </div>
             </div>
             <div className="relative mb-m50 ">
               <InputElm
