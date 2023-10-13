@@ -1,0 +1,134 @@
+'use client'
+
+import React, { ChangeEvent, useState } from 'react'
+import * as yup from 'yup'
+import { Formik } from 'formik'
+import InputElm from '@/app/ui/InputElm'
+import ButtonPrimary from '@/app/ui/ButtonPrimary'
+import { AiOutlineLoading3Quarters } from 'react-icons/ai'
+import { useDispatch } from 'react-redux'
+import { closeModal } from '@/app/store/slice/modalSlice'
+import { UserApi } from '@/api/UserApi'
+import { notification } from 'antd'
+
+const UpdateModal = () => {
+  const dispatch = useDispatch()
+
+  const [fileUpload, setfileUpload] = useState<string>()
+
+  const handleChooseFile = (e: ChangeEvent<HTMLInputElement>): void => {
+    if (e.target.files && e.target.files[0]) {
+      const reader = new FileReader()
+      reader.onload = (event: ProgressEvent<FileReader>) => {
+        if (event.target?.result) {
+          const base64Image = event.target.result as string
+          setfileUpload(base64Image)
+        }
+      }
+      reader.readAsDataURL(e.target.files[0])
+    }
+  }
+
+  const schema = yup.object().shape({
+    fullName: yup
+      .string()
+      .required('Tên là bắt buộc')
+      .min(4, 'Tên phải có ít nhất 4 kí tự'),
+  })
+  const handleLogin = (
+    values: { fullName: string },
+    { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void },
+  ) => {
+    const form = new FormData()
+    if (fileUpload) {
+      form.append('avatar', fileUpload)
+    }
+    form.append('fullName', values.fullName)
+    setSubmitting(true)
+    UserApi.updateMe(form)
+      .then((res: ApiResponse<UserData>) => {
+        if (res.data) {
+          notification.success({
+            message: 'Cập nhật thành công!',
+          })
+          dispatch(closeModal())
+        }
+      })
+      .catch((err: ErrorResponse) => {
+        console.log(err)
+
+        notification.error({
+          message: err.code,
+          description: err.message,
+        })
+      })
+    setSubmitting(false)
+  }
+
+  return (
+    <Formik
+      initialValues={{
+        fullName: '',
+      }}
+      validationSchema={schema}
+      onSubmit={handleLogin}
+    >
+      {({
+        values,
+        handleChange,
+        isSubmitting,
+        handleSubmit,
+        errors,
+      }): JSX.Element => (
+        <form
+          className=" bg-[var(--backgroundElm)] top-[15%] modal py-p45px px-p20px border-[2px] border-solid rounded-md"
+          onSubmit={handleSubmit}
+        >
+          <header className="flex justify-between items-center mb-m40">
+            <h2 className=" text-[28px] font-bold">Update User</h2>
+            <button
+              id="close-button"
+              className="btn"
+              onClick={() => dispatch(closeModal())}
+              aria-label="Close"
+            >
+              X
+            </button>
+          </header>
+          <div>
+            <div className="mb-m30">
+              <input type="file" onChange={handleChooseFile} alt="avartar" />
+            </div>
+            <div className="relative mb-m40">
+              <InputElm
+                name="fullName"
+                setData={handleChange}
+                type="text"
+                error={errors.fullName}
+                value={values.fullName}
+              />
+              {errors.fullName && (
+                <div className="absolute bottom-[-30px] left-[20px] text-primary text-fs14">
+                  {errors.fullName}
+                </div>
+              )}
+            </div>
+
+            <ButtonPrimary
+              text={
+                isSubmitting ? (
+                  <AiOutlineLoading3Quarters className=" animate-spin text-fs16" />
+                ) : (
+                  'Update'
+                )
+              }
+              type="submit"
+            />
+          </div>
+        </form>
+      )}
+    </Formik>
+  )
+}
+
+export default UpdateModal
