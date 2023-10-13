@@ -10,7 +10,7 @@ function NotFound() {
         Page not Found
       </h1>
 
-      <Link className="text-primary font-bold flex items-center" href="/home">
+      <Link className="text-primary font-bold flex items-center" href="/">
         <AiOutlineLeft className="font-bold" />
         Back to Home page
       </Link>
