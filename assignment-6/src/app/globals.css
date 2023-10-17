@@ -2,14 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --text: '#343a40';
-  --bgColor: '#adb5bd';
-  --backgroundElm: '#fff';
-  --border: '#adb5bd';
-  --primary: #e64980;
-}
-
 body {
   box-sizing: border-box;
   line-height: 1.5;

@@ -3,7 +3,6 @@
 import React from 'react'
 import { useRouter } from 'next/navigation'
 import { useDispatch } from 'react-redux'
-import * as yup from 'yup'
 import { Formik } from 'formik'
 import InputElm from '@/app/ui/InputElm'
 import ButtonPrimary from '@/app/ui/ButtonPrimary'
@@ -14,6 +13,7 @@ import { notification } from 'antd'
 import { TopicApi } from '@/api/TopicApi'
 import { setTopic } from '@/app/store/slice/booksSlice'
 import { loginSchema } from '@/app/validate/loginValidate'
+
 const Login = ({ setTab }: { setTab: (value: number) => void }) => {
   const dispatch = useDispatch()
   const route = useRouter()
@@ -77,7 +77,7 @@ const Login = ({ setTab }: { setTab: (value: number) => void }) => {
         errors,
       }): JSX.Element => (
         <form
-          className="modal top-[20%] py-p45px px-p20px border-[2px] border-solid rounded-md"
+          className="modal top-[20%] py-p45px px-p20px border-[2px] border-solid rounded-md bg-white dark:bg-bgElm"
           onSubmit={handleSubmit}
         >
           <h1 className="text-fs24 text-center mb-m30">

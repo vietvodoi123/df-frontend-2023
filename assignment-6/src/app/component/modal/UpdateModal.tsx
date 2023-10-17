@@ -9,7 +9,7 @@ import { useDispatch } from 'react-redux'
 import { closeModal } from '@/app/store/slice/modalSlice'
 import { UserApi } from '@/api/UserApi'
 import { notification } from 'antd'
-import { userSchema } from '../../validate/uservalidate'
+import { userSchema } from '../../validate/userValidate'
 
 const UpdateModal = () => {
   const dispatch = useDispatch()
@@ -73,7 +73,7 @@ const UpdateModal = () => {
         errors,
       }): JSX.Element => (
         <form
-          className=" bg-[var(--backgroundElm)] top-[15%] modal py-p45px px-p20px border-[2px] border-solid rounded-md"
+          className=" bg-white dark:bg-bgElm top-[15%] modal py-p45px px-p20px border-[2px] border-solid rounded-md animate-fadeInOut"
           onSubmit={handleSubmit}
         >
           <header className="flex justify-between items-center mb-m40">

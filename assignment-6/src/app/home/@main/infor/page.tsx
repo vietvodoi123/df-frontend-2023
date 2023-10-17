@@ -32,7 +32,7 @@ function Page() {
     return NotFound
   }
   return (
-    <div className=" p-p50px mt-m50 leading-[1.5] w-[93%] mx-auto bg-[var(--backgroundElm)] rounded-md shadow-md">
+    <div className=" p-p50px mt-m50 leading-[1.5] w-[93%] mx-auto bg-white dark:bg-bgElm rounded-md shadow-md">
       <div className=" flex justify-between items-center mb-m30">
         <Link
           href="/home"

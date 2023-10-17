@@ -16,8 +16,10 @@ const config: Config = {
       colors: {
         primary: '#e64980',
         text: '#343a40',
-        bgColor: '#adb5bd',
+        bgColor: '#f8f9fa',
         border: '#adb5bd',
+        bgElm: '#333',
+        bgColorDark: '#1a1a1a',
       },
       padding: {
         p4px: '4px',
@@ -99,5 +101,6 @@ const config: Config = {
     },
   },
   plugins: [],
+  darkMode: 'class',
 }
 export default config

@@ -41,7 +41,7 @@ function Page({ params }: { params: { bookId: string } }) {
   }
 
   return (
-    <div className=" p-p50px mt-m50 leading-[1.5] w-[93%] mx-auto bg-[var(--backgroundElm)] rounded-md shadow-md">
+    <div className=" p-p50px mt-m50 leading-[1.5] w-[93%] mx-auto bg-white dark:bg-bgElm rounded-md shadow-md">
       <Link
         href="/home"
         className=" text-primary font-bold flex  items-center mb-m30"

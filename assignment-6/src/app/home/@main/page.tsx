@@ -43,17 +43,25 @@ function Main() {
     setLoading(false)
   }, [books.reload, books.currentPage, books.query])
   return (
-    <main className="mt-m50 ">
-      <div className=" w-[94%] mx-auto bg-[var(--backgroundElm)] p-p30px rounded-md shadow-md">
+    <main className=" mt-m50">
+      <div className=" w-[94%] mx-auto bg-white dark:bg-bgElm p-p30px rounded-md shadow-md">
         <MainHeader />
         <section className="flex flex-col h-[350px] justify-between">
-          <table className=" w-full border-collapse bg-[var(--backgroundElm)]">
+          <table className=" w-full border-collapse">
             <thead>
               <tr>
-                <th className=" w-[35%]">Name</th>
-                <th className=" w-[20%]">Author</th>
-                <th className=" w-[20%]">Topic</th>
-                <th>Action</th>
+                <th className=" w-[35%] border-border border-[2px] border-solid">
+                  Name
+                </th>
+                <th className=" w-[20%] border-border border-[2px] border-solid">
+                  Author
+                </th>
+                <th className=" w-[20%] border-border border-[2px] border-solid">
+                  Topic
+                </th>
+                <th className="border-border border-[2px] border-solid">
+                  Action
+                </th>
               </tr>
             </thead>
             <tbody id="tbody">
@@ -61,10 +69,16 @@ function Main() {
                 data &&
                 data.map((item) => (
                   <tr key={item.id}>
-                    <td>{item.name}</td>
-                    <td>{item.author}</td>
-                    <td>{item.topic.name}</td>
-                    <td>
+                    <td className="border-border border-[2px] border-solid">
+                      {item.name}
+                    </td>
+                    <td className="border-border border-[2px] border-solid">
+                      {item.author}
+                    </td>
+                    <td className="border-border border-[2px] border-solid">
+                      {item.topic.name}
+                    </td>
+                    <td className="border-border border-[2px] border-solid">
                       <button
                         onClick={() => {
                           dispatch(setEdit(item))

@@ -5,7 +5,7 @@ import storage from 'redux-persist/lib/storage' // Chọn cách lưu trữ dữ 
 import { combineReducers } from 'redux'
 import { configureStore } from '@reduxjs/toolkit'
 import userSlice from './slice/userSlice'
-import themeSlice from './slice/themeSlice'
+
 import booksSlice from './slice/booksSlice'
 import modalSlice from './slice/modalSlice'
 
@@ -18,7 +18,7 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   user: userSlice,
-  theme: themeSlice,
+
   books: booksSlice,
   modal: modalSlice,
 })

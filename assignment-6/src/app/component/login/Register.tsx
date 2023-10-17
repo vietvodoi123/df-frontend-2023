@@ -71,7 +71,7 @@ const Register = ({ setTab }: { setTab: (value: number) => void }) => {
         errors,
       }): JSX.Element => (
         <form
-          className="top-[5%] modal py-p45px px-p20px border-[2px] border-solid rounded-md"
+          className="top-[5%] modal py-p45px px-p20px border-[2px] border-solid rounded-md bg-white dark:bg-bgElm"
           onSubmit={handleSubmit}
         >
           <h1 className="text-fs24 text-center mb-m30">
@@ -141,7 +141,7 @@ const Register = ({ setTab }: { setTab: (value: number) => void }) => {
                 isSubmitting ? (
                   <AiOutlineLoading3Quarters className=" animate-spin text-fs16" />
                 ) : (
-                  'Login'
+                  'Sign Up'
                 )
               }
               type="submit"

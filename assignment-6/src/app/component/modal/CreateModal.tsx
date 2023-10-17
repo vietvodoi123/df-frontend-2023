@@ -12,6 +12,7 @@ import { setReload } from '@/app/store/slice/booksSlice'
 import InputElm from '../../ui/InputElm'
 import ButtonPrimary from '../../ui/ButtonPrimary'
 import { createBookSchema } from '../../validate/bookValidate'
+
 const CreateModal = () => {
   const dispatch = useDispatch()
   const topic = useSelector((state: IRootState) => state.books.topic)
@@ -64,7 +65,7 @@ const CreateModal = () => {
         errors,
       }): JSX.Element => (
         <form
-          className="modal top-[20%] bg-[var(--backgroundElm)] px-p20px py-p30px rounded-md animate-fadeInOut shadow-md"
+          className="modal top-[20%] bg-white dark:bg-bgElm px-p20px py-p30px rounded-md animate-fadeInOut shadow-md"
           onSubmit={handleSubmit}
         >
           <header className="flex justify-between items-center mb-m40">

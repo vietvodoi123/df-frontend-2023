@@ -25,7 +25,7 @@ function InputElm({ name, setData, type, value, error }: Props) {
           (type === 'password' && show) || type === 'text' ? 'text' : 'password'
         }
         id={name}
-        className={` peer rounded-md px-p20px py-p13px h-10 w-full  border-2 focus:border-primary placeholder-transparent outline-none bg-[var(--backgroundElm)] ${
+        className={` peer rounded-md px-p20px py-p13px h-10 w-full  border-2 focus:border-primary placeholder-transparent outline-none bg-white dark:bg-bgElm ${
           error && 'border-primary'
         }`}
         placeholder=" "
@@ -34,7 +34,7 @@ function InputElm({ name, setData, type, value, error }: Props) {
       />
       <label
         htmlFor={name}
-        className="absolute inline-block px-p10px rounded-md bg-[var(--backgroundElm)] left-[10px] top-2 select-none pointer-events-none transition-all"
+        className="absolute inline-block px-p10px rounded-md bg-white dark:bg-bgElm left-[10px] top-2 select-none pointer-events-none transition-all"
       >
         {capitalizeFirstLetter(name)}
       </label>
@@ -47,9 +47,9 @@ function InputElm({ name, setData, type, value, error }: Props) {
           className=" absolute right-[10px] top-[22%]"
         >
           {show ? (
-            <AiFillEyeInvisible className=" text-fs24 text-[var(--border)]" />
+            <AiFillEyeInvisible className=" text-fs2 fill-border dark:fill-white text-fs24" />
           ) : (
-            <AiFillEye className=" text-fs24 text-[var(--border)]" />
+            <AiFillEye className=" text-fs2 fill-border dark:fill-white text-fs24" />
           )}
         </button>
       )}

@@ -5,10 +5,10 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useDispatch, useSelector } from 'react-redux'
 import { useRouter } from 'next/navigation'
+import { useTheme } from 'next-themes'
 import { BiLogOut, BiSolidUser } from 'react-icons/bi'
 import { FcKey } from 'react-icons/fc'
 import { IRootState } from '../store/store'
-import { setColor } from '../store/slice/themeSlice'
 import { logout } from '../store/slice/userSlice'
 import { changePass } from '../store/slice/modalSlice'
 
@@ -16,13 +16,13 @@ const Header: React.FC = () => {
   const dispatch = useDispatch()
   const route = useRouter()
   const [openSubMenu, setOpenSubMenu] = useState(false)
-  const colorMode = useSelector((state: IRootState) => state.theme.mode)
+  const { theme, setTheme } = useTheme()
   const name = useSelector((state: IRootState) => state.user.userCurrent)
 
   const subMenu = (
     <div
       onMouseLeave={() => setOpenSubMenu(false)}
-      className="absolute bottom-[-140px] right-0 bg-[var(--backgroundElm)] w-[150px]  rounded-md shadow-md z-[3] flex flex-col"
+      className="absolute bottom-[-140px] right-0 bg-white dark:bg-bgElm w-[150px]  rounded-md shadow-md z-[3] flex flex-col"
     >
       <button
         className="flex justify-center items-center gap-g10 p-p10px cursor-pointer hover:opacity-80"
@@ -55,7 +55,7 @@ const Header: React.FC = () => {
   )
 
   return (
-    <header className="bg-[var(--backgroundElm)] shadow-md">
+    <header className=" bg-white dark:bg-bgElm shadow-md">
       <nav>
         <ul className="nav-list flex items-center justify-between py-[10px] px-[50px]">
           <li className="nav-item-logo text-[18px] font-bold">
@@ -69,29 +69,25 @@ const Header: React.FC = () => {
           <li className="nav-item-user flex items-center justify-between gap-[20px] relative">
             <button
               onClick={() => {
-                if (colorMode === 'light') {
-                  dispatch(setColor('dark'))
-                } else {
-                  dispatch(setColor('light'))
-                }
+                setTheme(theme === 'dark' ? 'light' : 'dark')
               }}
               className=" bg-[var(--bgColor)] flex justify-between items-center w-[50px] h-[25px] rounded-full border-[2px] border-solid border-[var(--border)]"
             >
-              {colorMode === 'light' ? (
-                <Image
-                  src="/sun.png"
-                  alt="sun"
-                  className="light-btn"
-                  width={30}
-                  height={30}
-                />
-              ) : (
+              {theme === 'dark' || !theme ? (
                 <Image
                   src="/half-moon.png"
                   width={30}
                   height={30}
                   alt="moon"
                   className="dark-btn ml-auto"
+                />
+              ) : (
+                <Image
+                  src="/sun.png"
+                  alt="sun"
+                  className="light-btn"
+                  width={30}
+                  height={30}
                 />
               )}
             </button>

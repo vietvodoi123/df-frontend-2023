@@ -18,7 +18,7 @@ const DeleteModal = () => {
   return (
     <section
       id="delete-modal"
-      className="modal top-[20%] bg-[var(--backgroundElm)] px-p20px py-p30px rounded-md animate-fadeInOut"
+      className="modal top-[20%] bg-white dark:bg-bgElm px-p20px py-p30px rounded-md animate-fadeInOut"
     >
       <header className="flex justify-between items-center mb-m40">
         <h2 className=" text-[22px] font-bold text-center w-full">

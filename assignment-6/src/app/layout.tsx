@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google'
 import React from 'react'
 import ReduxProvider from './store/ReduxProvider'
 import QueryProvider from './QueryProvider'
+import ProviderTheme from './ThemeProvider'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -16,11 +17,11 @@ export default function RootLayout(props: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className=" w-screen h-screen relative bg-[var(--bgColor)]">
+        <ProviderTheme>
           <QueryProvider>
             <ReduxProvider>{props.children}</ReduxProvider>
           </QueryProvider>
-        </div>
+        </ProviderTheme>
       </body>
     </html>
   )

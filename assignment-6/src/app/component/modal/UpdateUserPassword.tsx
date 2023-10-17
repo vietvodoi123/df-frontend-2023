@@ -10,7 +10,7 @@ import { closeModal } from '@/app/store/slice/modalSlice'
 import zxcvbn from 'zxcvbn'
 import { UserApi } from '@/api/UserApi'
 import { notification } from 'antd'
-import { passSchema } from '../../validate/uservalidate'
+import { passSchema } from '../../validate/userValidate'
 
 const UpdateUserPassword = () => {
   const dispatch = useDispatch()
@@ -78,7 +78,7 @@ const UpdateUserPassword = () => {
         errors,
       }): JSX.Element => (
         <form
-          className=" bg-[var(--backgroundElm)] top-[15%] modal py-p45px px-p20px border-[2px] border-solid rounded-md"
+          className=" bg-white animate-fadeInOut dark:bg-bgElm top-[15%] modal py-p45px px-p20px border-[2px] border-solid rounded-md"
           onSubmit={handleSubmit}
         >
           <header className="flex justify-between items-center mb-m40">
