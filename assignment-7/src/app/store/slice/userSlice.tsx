@@ -1,7 +1,7 @@
 'use client'
 
+import { Auth } from '@/generated/model'
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-
 interface IUserState {
   userCurrent?: Auth
 }
@@ -11,7 +11,7 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    login: (state, actions: PayloadAction<Auth>) => {
+    signin: (state, actions: PayloadAction<Auth>) => {
       state.userCurrent = actions.payload
     },
     logout: () => {
@@ -20,6 +20,6 @@ const userSlice = createSlice({
   },
 })
 
-export const { login, logout } = userSlice.actions
+export const { signin, logout } = userSlice.actions
 
 export default userSlice.reducer

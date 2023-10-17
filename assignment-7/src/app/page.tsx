@@ -2,15 +2,18 @@
 
 import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { UserApi } from '@/api/UserApi'
 import Login from './component/login/Login'
 import Register from './component/login/Register'
+import { useSelector } from 'react-redux'
+import { IRootState } from './store/store'
 
 const Home = () => {
   const route = useRouter()
 
   const [tab, setTab] = useState(0)
-  const isAuth = UserApi.isLogin()
+  const isAuth = useSelector(
+    (state: IRootState) => state.user.userCurrent?.accessToken,
+  )
 
   if (isAuth) {
     route.push('/home')

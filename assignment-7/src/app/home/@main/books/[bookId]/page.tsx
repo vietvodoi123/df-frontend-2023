@@ -1,30 +1,34 @@
 'use client'
 
-import { BookApi } from '@/api/BookApi'
 import NotFound from '@/app/not-found'
 import { setNameBookDelete } from '@/app/store/slice/booksSlice'
 import { setDel } from '@/app/store/slice/modalSlice'
-import { notification } from 'antd'
+import { getBook } from '@/generated/book/book'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { AiOutlineLeft } from 'react-icons/ai'
 import { useDispatch } from 'react-redux'
+import { Book, BookResponse } from '@/generated/model'
+import { notification } from 'antd'
 
 function Page({ params }: { params: { bookId: string } }) {
   const router = useRouter()
   const dispatch = useDispatch()
-  const [data, setData] = useState<IBook>()
+  const [data, setData] = useState<Book>()
 
   useEffect(() => {
-    BookApi.getBookById(parseInt(params.bookId, 10))
-      .then((res: ApiResponse<IBook>) => {
-        if ('data' in res) {
+    getBook(parseInt(params.bookId, 10))
+      .then((res: BookResponse) => {
+        if (res.data) {
           setData(res.data)
         }
       })
-      .catch((err: ErrorResponse) => {
-        notification.error({ message: err.code, description: err.message })
+      .catch((error: ErrorResponse) => {
+        notification.error({
+          message: error.error,
+          description: error.message,
+        })
       })
   }, [])
 
@@ -55,7 +59,7 @@ function Page({ params }: { params: { bookId: string } }) {
         <b>Author:</b> {data.author}
       </p>
       <p className="text-[18px] mb-m30">
-        <b>Topic:</b> {data.topic.name}
+        <b>Topic:</b> {data.topic?.name}
       </p>
       <button onClick={onDelete} className=" text-primary font-bold underline ">
         Delete

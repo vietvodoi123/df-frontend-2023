@@ -1,8 +1,3 @@
-interface Auth {
-  id?: number
-  email?: string
-  accessToken?: string
-}
 interface UserData {
   id: number
   fullName: string

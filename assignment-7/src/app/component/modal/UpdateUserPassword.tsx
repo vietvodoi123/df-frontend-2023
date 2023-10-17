@@ -8,9 +8,11 @@ import { AiOutlineLoading3Quarters } from 'react-icons/ai'
 import { useDispatch } from 'react-redux'
 import { closeModal } from '@/app/store/slice/modalSlice'
 import zxcvbn from 'zxcvbn'
-import { UserApi } from '@/api/UserApi'
+
 import { notification } from 'antd'
 import { passSchema } from '../../validate/userValidate'
+import { updatePassword } from '@/generated/user/user'
+import { MessageResponse, UpdatePasswordRequest } from '@/generated/model'
 
 const UpdateUserPassword = () => {
   const dispatch = useDispatch()
@@ -36,29 +38,30 @@ const UpdateUserPassword = () => {
     values: { oldPassword: string; newPassword: string },
     { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void },
   ) => {
-    setSubmitting(true)
-    console.log(values)
+    if (values.newPassword !== values.oldPassword) {
+      setSubmitting(true)
+      const data: UpdatePasswordRequest = {
+        oldPassword: values.oldPassword,
+        newPassword: values.newPassword,
+      }
 
-    const form = new FormData()
-    form.append('oldPassword', values.oldPassword)
-    form.append('newPassword', values.newPassword)
-    UserApi.changePass(form)
-      .then((res: ApiResponse<Message>) => {
-        if ('data' in res) {
-          notification.success({
-            message: res.data.message,
-          })
-          dispatch(closeModal())
-        }
-      })
-      .catch((err: ErrorResponse) => {
-        notification.error({
-          message: err.code,
-          description: err.message,
+      updatePassword(data)
+        .then((res: MessageResponse) => {
+          if (res.data) {
+            notification.success({
+              message: res.data.message,
+            })
+          }
         })
-      })
+        .catch((error: ErrorResponse) => {
+          notification.error({
+            message: error.error,
+            description: error.message,
+          })
+        })
 
-    setSubmitting(false)
+      setSubmitting(false)
+    }
   }
 
   return (
@@ -82,7 +85,7 @@ const UpdateUserPassword = () => {
           onSubmit={handleSubmit}
         >
           <header className="flex justify-between items-center mb-m40">
-            <h2 className=" text-[28px] font-bold">Update User</h2>
+            <h2 className=" text-[28px] font-bold">Change Password</h2>
             <button
               id="close-button"
               className="btn"

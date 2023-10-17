@@ -6,12 +6,13 @@ import { AiOutlineLoading3Quarters } from 'react-icons/ai'
 import { useDispatch, useSelector } from 'react-redux'
 import { closeModal } from '@/app/store/slice/modalSlice'
 import { IRootState } from '@/app/store/store'
-import { BookApi } from '@/api/BookApi'
+import { createBook } from '@/generated/book/book'
 import { notification } from 'antd'
 import { setReload } from '@/app/store/slice/booksSlice'
 import InputElm from '../../ui/InputElm'
 import ButtonPrimary from '../../ui/ButtonPrimary'
 import { createBookSchema } from '../../validate/bookValidate'
+import { BookResponse, CreateBookRequest } from '@/generated/model'
 
 const CreateModal = () => {
   const dispatch = useDispatch()
@@ -23,27 +24,27 @@ const CreateModal = () => {
   ) => {
     setSubmitting(true)
     const id = parseInt(values.topic.toString(), 10)
-    const data = {
+    const data: CreateBookRequest = {
       name: values.name,
       author: values.author,
-      topicID: id,
+      topicId: id,
     }
-    BookApi.createBook(data)
-      .then((res: ApiResponse<IBook>) => {
-        if ('data' in res) {
+    createBook(data)
+      .then((res: BookResponse) => {
+        if (res.data) {
           notification.success({
-            message: `Thêm thành công ${res.data?.id}`,
+            message: 'Thêm thành công!',
           })
           dispatch(setReload())
-          dispatch(closeModal())
         }
       })
-      .catch((err: ErrorResponse) => {
+      .catch((error: ErrorResponse) => {
         notification.error({
-          message: err.code,
-          description: err.message,
+          message: error.error,
+          description: error.message,
         })
       })
+
     setSubmitting(false)
   }
 
@@ -117,12 +118,18 @@ const CreateModal = () => {
                   onChange={handleChange}
                   name="topic"
                   id="topic"
-                  className="w-full p-p10px border-[2px] border-solid border-[var(--border)] rounded-md font-normal bg-[var(--backgroundElm)]"
+                  className="w-full p-p10px border-[2px] border-solid border-border rounded-md font-normal bg-white dark:bg-bgElm"
                 >
-                  <option value="Chose Topic">Choose Topic</option>
+                  <option value="Chose Topic" className="text-text">
+                    Choose Topic
+                  </option>
                   {topic &&
                     topic.map((item) => (
-                      <option value={item.id} key={item.id}>
+                      <option
+                        value={item.id}
+                        key={item.id}
+                        className="text-text"
+                      >
                         {item.name}
                       </option>
                     ))}

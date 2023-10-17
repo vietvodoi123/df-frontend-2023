@@ -7,13 +7,16 @@ import { Formik } from 'formik'
 import InputElm from '@/app/ui/InputElm'
 import ButtonPrimary from '@/app/ui/ButtonPrimary'
 import { AiOutlineLoading3Quarters } from 'react-icons/ai'
-import { UserApi } from '@/api/UserApi'
-import { login } from '@/app/store/slice/userSlice'
-import { notification } from 'antd'
-import { TopicApi } from '@/api/TopicApi'
-import { setTopic } from '@/app/store/slice/booksSlice'
+
 import { loginSchema } from '@/app/validate/loginValidate'
 
+import { login } from '../../../generated/auth/auth'
+import { ErrorDetail, LoginResponse, TopicsResponse } from '@/generated/model'
+import { getTopics } from '@/generated/topic/topic'
+import { notification } from 'antd'
+import { setTopic } from '@/app/store/slice/booksSlice'
+import { error } from 'console'
+import { signin } from '@/app/store/slice/userSlice'
 const Login = ({ setTab }: { setTab: (value: number) => void }) => {
   const dispatch = useDispatch()
   const route = useRouter()
@@ -23,40 +26,29 @@ const Login = ({ setTab }: { setTab: (value: number) => void }) => {
     { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void },
   ) => {
     setSubmitting(true)
-    await UserApi.login(values)
-      .then((e: ApiResponse<Auth>) => {
-        if ('data' in e) {
-          notification.success({
-            message: 'Đăng nhập thành công!',
-            description: `Xin chào ${e.data.email}`,
-          })
-
-          // lay topic
-          TopicApi.getTopic()
-            .then((res: ApiResponse<ITopic[]>) => {
-              if ('data' in res) {
-                console.log(res.data)
-
-                dispatch(setTopic(res.data))
-              }
-            })
-            .catch((err: ErrorResponse) => {
-              notification.error({
-                message: err.code,
-                description: err.message ? err.message : err.error,
-              })
-            })
-          dispatch(login({ ...e.data }))
-          route.push('/home')
-        }
-      })
-      .catch((err: ErrorResponse) => {
-        notification.error({
-          message: err.code,
-          description: err.message,
+    await login(values).then(async (res: LoginResponse) => {
+      console.log(res.data)
+      if (res.data) {
+        notification.success({
+          message: 'Đăng nhập thành công!',
+          description: `Xin chào ${res.data?.email}`,
         })
-      })
-
+        dispatch(signin(res.data))
+        route.push('/home')
+        await getTopics()
+          .then((res: TopicsResponse) => {
+            if (res.data) {
+              dispatch(setTopic(res.data))
+            }
+          })
+          .catch((error: ErrorResponse) => {
+            notification.error({
+              message: error.error,
+              description: error.message,
+            })
+          })
+      }
+    })
     setSubmitting(false)
   }
 

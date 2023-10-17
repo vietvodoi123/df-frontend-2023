@@ -1,45 +1,47 @@
 'use client'
 
-import { BookApi } from '@/api/BookApi'
 import MainHeader from '@/app/component/MainHeader'
 import Pagnation from '@/app/component/Pagnation'
 import { setNameBookDelete } from '@/app/store/slice/booksSlice'
 import { setDel, setEdit } from '@/app/store/slice/modalSlice'
 import { IRootState } from '@/app/store/store'
-import { notification } from 'antd'
+import { getBooks } from '@/generated/book/book'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { Book, BooksResponse } from '@/generated/model'
+import { notification } from 'antd'
 
 function Main() {
   const router = useRouter()
   const dispatch = useDispatch()
   const [loading, setLoading] = useState<boolean>(false)
-  const [data, setData] = useState<IBook[]>()
+  const [data, setData] = useState<Book[]>()
   const [totalPages, setTotalPage] = useState<number>()
 
   const books = useSelector((state: IRootState) => state.books)
   useEffect(() => {
     setLoading(true)
-    BookApi.getBooks({
+    getBooks({
       page: books.currentPage,
       pageSize: 5,
       query: books.query,
     })
-      .then((res: ApiResponse<IBook[]>) => {
-        if ('data' in res) {
+      .then((res: BooksResponse) => {
+        if (res.data) {
           setData(res.data)
         }
-        if ('metadata' in res) {
-          setTotalPage(res.metadata?.totalPages)
+        if (res.metadata) {
+          setTotalPage(res.metadata.totalPages)
         }
       })
-      .catch((err: ErrorResponse) => {
+      .catch((error: ErrorResponse) => {
         notification.error({
-          message: err.code,
-          description: err.message,
+          message: error.error,
+          description: error.message,
         })
       })
+
     setLoading(false)
   }, [books.reload, books.currentPage, books.query])
   return (
@@ -76,7 +78,7 @@ function Main() {
                       {item.author}
                     </td>
                     <td className="border-border border-[2px] border-solid">
-                      {item.topic.name}
+                      {item.topic?.name}
                     </td>
                     <td className="border-border border-[2px] border-solid">
                       <button

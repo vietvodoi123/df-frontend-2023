@@ -1,11 +1,12 @@
 // modalSlice.js
+import { Book, Me } from '@/generated/model'
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 
 interface IModal {
   create: boolean
   del: boolean
-  edit?: IBook
-  update?: MeData
+  edit?: Book
+  update?: Me
   changePass: boolean
 }
 
@@ -27,7 +28,7 @@ const modalSlice = createSlice({
     setDel: (state, action: PayloadAction<boolean>) => {
       state.del = action.payload
     },
-    setEdit: (state, action: PayloadAction<IBook>) => {
+    setEdit: (state, action: PayloadAction<Book>) => {
       state.edit = action.payload
     },
     closeModal: (state) => {
@@ -37,7 +38,7 @@ const modalSlice = createSlice({
       state.update = undefined
       state.changePass = false
     },
-    setUpdate: (state, actions: PayloadAction<MeData>) => {
+    setUpdate: (state, actions: PayloadAction<Me>) => {
       state.update = actions.payload
     },
     changePass: (state) => {

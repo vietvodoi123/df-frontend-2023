@@ -5,16 +5,39 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { closeModal } from '@/app/store/slice/modalSlice'
 import { IRootState } from '@/app/store/store'
-import { BookApi } from '@/api/BookApi'
 import { notification } from 'antd'
 import { setReload } from '@/app/store/slice/booksSlice'
 import ButtonPrimary from '../../ui/ButtonPrimary'
+import { deleteBook } from '@/generated/book/book'
+import { MessageResponse } from '@/generated/model'
 
 const DeleteModal = () => {
   const dispatch = useDispatch()
   const nameBookDelete = useSelector(
     (state: IRootState) => state.books.nameBookDelete,
   )
+
+  async function onClickDelete() {
+    if (nameBookDelete && nameBookDelete.id) {
+      deleteBook(nameBookDelete.id)
+        .then((res: MessageResponse) => {
+          if (res.data) {
+            notification.success({
+              message: res.data.message,
+            })
+            dispatch(setReload())
+          }
+        })
+        .catch((error: ErrorResponse) => {
+          notification.error({
+            message: error.error,
+            description: error.message,
+          })
+        })
+
+      dispatch(closeModal())
+    }
+  }
   return (
     <section
       id="delete-modal"
@@ -45,26 +68,7 @@ const DeleteModal = () => {
       </main>
       <footer className="flex justify-center items-center gap-20 mt-m30">
         <button
-          onClick={() => {
-            if (nameBookDelete && nameBookDelete.id) {
-              BookApi.deleteBook(parseInt(nameBookDelete?.id, 10))
-                .then((res: ApiResponse<Message>) => {
-                  if ('data' in res) {
-                    notification.success({
-                      message: res.data.message,
-                    })
-                    dispatch(setReload())
-                  }
-                })
-                .catch((error: ErrorResponse) => {
-                  notification.error({
-                    message: error.code,
-                    description: error.message,
-                  })
-                })
-              dispatch(closeModal())
-            }
-          }}
+          onClick={onClickDelete}
           id="btn-delete-confirm"
           className=" font-bold text-[var(--border)] hover:text-primary hover:scale-110"
         >

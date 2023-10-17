@@ -6,49 +6,60 @@ import { AiOutlineLoading3Quarters } from 'react-icons/ai'
 import { useDispatch, useSelector } from 'react-redux'
 import { IRootState } from '@/app/store/store'
 import { closeModal } from '@/app/store/slice/modalSlice'
-import { BookApi } from '@/api/BookApi'
+
 import { notification } from 'antd'
 import { setReload } from '@/app/store/slice/booksSlice'
 import InputElm from '../../ui/InputElm'
 import ButtonPrimary from '../../ui/ButtonPrimary'
 import { createBookSchema } from '../../validate/bookValidate'
+import { updateBook } from '@/generated/book/book'
+import { BookResponse, UpdateBookRequest } from '@/generated/model'
 
 const EditModal = () => {
   const dispatch = useDispatch()
   const edit = useSelector((state: IRootState) => state.modal.edit)
   const topic = useSelector((state: IRootState) => state.books.topic)
-
   if (!edit) {
-    return <div>404</div>
+    dispatch(closeModal())
+    return null
   }
-
   const handleLogin = (
     values: { name: string; author: string; topic: number },
     { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void },
   ) => {
     setSubmitting(true)
-    const id = parseInt(values.topic.toString(), 10)
-    const data = {
-      name: values.name,
-      author: values.author,
-      topicID: id,
-    }
-    BookApi.updateBooks(parseInt(edit.id, 10), data)
-      .then((res: ApiResponse<IBook>) => {
-        if ('data' in res) {
-          notification.success({
-            message: `Chỉnh sửa thành công! ${res.data?.id}`,
-          })
-          dispatch(setReload())
-          dispatch(closeModal())
-        }
-      })
-      .catch((err: ErrorResponse) => {
-        notification.error({
-          message: err.code,
-          description: err.message,
+    if (edit) {
+      const data: UpdateBookRequest = {}
+      if (values.topic !== edit.topic?.id) {
+        data.topicId = values.topic
+      }
+      if (values.author !== edit.author) {
+        data.author = values.author
+      }
+      if (values.name !== edit.name) {
+        data.author = values.name
+      }
+      console.log(edit.id, data)
+
+      updateBook(edit.id, data)
+        .then((res: BookResponse) => {
+          if (res.data) {
+            notification.success({
+              message: `Chỉnh sửa thành công! ${res.data?.id}`,
+            })
+            dispatch(setReload())
+            dispatch(closeModal())
+          }
         })
-      })
+        .catch((error: ErrorResponse) => {
+          console.log(error)
+
+          notification.error({
+            message: error.error,
+            description: error.message,
+          })
+        })
+    }
     setSubmitting(false)
   }
 
@@ -56,8 +67,8 @@ const EditModal = () => {
     <Formik
       initialValues={{
         name: edit.name,
-        author: edit.author,
-        topic: edit.topic.id,
+        author: edit.author ? edit.author : '',
+        topic: edit.topic?.id ? edit.topic.id : 0,
       }}
       validationSchema={createBookSchema}
       onSubmit={handleLogin}

@@ -1,10 +1,11 @@
+import { Book, Topic } from '@/generated/model'
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 
 interface IBooksSlice {
-  nameBookDelete?: IBook
+  nameBookDelete?: Book
   currentPage: number
   reload: number
-  topic?: ITopic[]
+  topic?: Topic[]
   pageSize: number
   query?: string
 }
@@ -21,13 +22,13 @@ const booksSlice = createSlice({
   name: 'books',
   initialState,
   reducers: {
-    setNameBookDelete: (state, action: PayloadAction<IBook>) => {
+    setNameBookDelete: (state, action: PayloadAction<Book>) => {
       state.nameBookDelete = action.payload
     },
     setCurrentPage: (state, action: PayloadAction<number>) => {
       state.currentPage = action.payload
     },
-    setTopic: (state, actions: PayloadAction<ITopic[]>) => {
+    setTopic: (state, actions: PayloadAction<Topic[]>) => {
       state.topic = actions.payload
     },
     setQuery: (state, actions: PayloadAction<string>) => {

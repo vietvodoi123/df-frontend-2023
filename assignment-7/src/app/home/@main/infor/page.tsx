@@ -1,8 +1,9 @@
 'use client'
 
-import { UserApi } from '@/api/UserApi'
 import NotFound from '@/app/not-found'
 import { setUpdate } from '@/app/store/slice/modalSlice'
+import { Me, MeResponse } from '@/generated/model'
+import { getMe } from '@/generated/user/user'
 import { notification } from 'antd'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -13,24 +14,21 @@ import { useDispatch } from 'react-redux'
 
 function Page() {
   const dispatch = useDispatch()
-  const [data, setData] = useState<MeData>()
+  const [data, setData] = useState<Me>()
   useEffect(() => {
-    UserApi.getUser()
-      .then((res: ApiResponse<MeData>) => {
-        if ('data' in res) {
+    getMe()
+      .then((res: MeResponse) => {
+        if (res.data) {
           setData(res.data)
         }
       })
-      .catch((err: ErrorResponse) => {
+      .catch((error: ErrorResponse) => {
         notification.error({
-          message: err.code,
-          description: err.message,
+          message: error.error,
+          description: error.message,
         })
       })
   }, [])
-  if (!data) {
-    return NotFound
-  }
   return (
     <div className=" p-p50px mt-m50 leading-[1.5] w-[93%] mx-auto bg-white dark:bg-bgElm rounded-md shadow-md">
       <div className=" flex justify-between items-center mb-m30">
@@ -42,7 +40,9 @@ function Page() {
         </Link>
         <button
           onClick={() => {
-            dispatch(setUpdate(data))
+            if (data) {
+              dispatch(setUpdate(data))
+            }
           }}
           className=" text-primary font-bold flex  items-center"
         >

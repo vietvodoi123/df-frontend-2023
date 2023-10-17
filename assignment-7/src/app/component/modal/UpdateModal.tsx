@@ -7,9 +7,10 @@ import ButtonPrimary from '@/app/ui/ButtonPrimary'
 import { AiOutlineLoading3Quarters } from 'react-icons/ai'
 import { useDispatch } from 'react-redux'
 import { closeModal } from '@/app/store/slice/modalSlice'
-import { UserApi } from '@/api/UserApi'
 import { notification } from 'antd'
 import { userSchema } from '../../validate/userValidate'
+import { updateUser } from '@/generated/user/user'
+import { UpdateUserRequest, UserResponse } from '@/generated/model'
 
 const UpdateModal = () => {
   const dispatch = useDispatch()
@@ -33,25 +34,24 @@ const UpdateModal = () => {
     values: { fullName: string },
     { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void },
   ) => {
-    const form = new FormData()
-    if (fileUpload) {
-      form.append('avatar', fileUpload)
-    }
-    form.append('fullName', values.fullName)
     setSubmitting(true)
-    UserApi.updateMe(form)
-      .then((res: ApiResponse<UserData>) => {
-        if ('data' in res) {
+    const form: UpdateUserRequest = {
+      avatar: fileUpload,
+      fullName: values.fullName,
+    }
+    updateUser(form)
+      .then((res: UserResponse) => {
+        if (res.data) {
           notification.success({
             message: 'Cập nhật thành công!',
           })
           dispatch(closeModal())
         }
       })
-      .catch((err: ErrorResponse) => {
+      .catch((error: ErrorResponse) => {
         notification.error({
-          message: err.code,
-          description: err.message,
+          message: error.error,
+          description: error.message,
         })
       })
     setSubmitting(false)

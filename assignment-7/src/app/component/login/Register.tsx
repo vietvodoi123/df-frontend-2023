@@ -6,9 +6,11 @@ import { Formik } from 'formik'
 import InputElm from '@/app/ui/InputElm'
 import ButtonPrimary from '@/app/ui/ButtonPrimary'
 import { AiOutlineLoading3Quarters } from 'react-icons/ai'
-import { UserApi } from '@/api/UserApi'
+
 import { notification } from 'antd'
 import { signUpSchema } from '../../validate/loginValidate'
+import { signup } from '@/generated/auth/auth'
+import { MessageResponse } from '@/generated/model'
 
 const Register = ({ setTab }: { setTab: (value: number) => void }) => {
   const checkPasswordStrength = (password: string): string => {
@@ -34,19 +36,19 @@ const Register = ({ setTab }: { setTab: (value: number) => void }) => {
     { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void },
   ) => {
     setSubmitting(true)
-    UserApi.signup(values)
-      .then((res: ApiResponse<Message>) => {
-        if ('data' in res) {
+    signup(values)
+      .then((res: MessageResponse) => {
+        if (res.data) {
           notification.success({
             message: res.data.message,
           })
           setTab(0)
         }
       })
-      .catch((err: ErrorResponse) => {
+      .catch((error: ErrorResponse) => {
         notification.error({
-          message: err.code,
-          description: err.message,
+          message: error.error,
+          description: error.message,
         })
       })
     setSubmitting(false)

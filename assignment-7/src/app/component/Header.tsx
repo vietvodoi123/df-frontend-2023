@@ -71,7 +71,7 @@ const Header: React.FC = () => {
               onClick={() => {
                 setTheme(theme === 'dark' ? 'light' : 'dark')
               }}
-              className=" bg-[var(--bgColor)] flex justify-between items-center w-[50px] h-[25px] rounded-full border-[2px] border-solid border-[var(--border)]"
+              className=" bg-bgColor dark:bg-bgColorDark flex justify-between items-center w-[50px] h-[25px] rounded-full border-[2px] border-solid border-border"
             >
               {theme === 'dark' || !theme ? (
                 <Image
