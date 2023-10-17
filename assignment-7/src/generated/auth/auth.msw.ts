@@ -5,28 +5,40 @@
  * This is a swagger for API.
  * OpenAPI spec version: 1.0
  */
-import {
-  rest
-} from 'msw'
-import {
-  faker
-} from '@faker-js/faker'
+import { rest } from 'msw'
+import { faker } from '@faker-js/faker'
 
-export const getLoginMock = () => ({data: faker.helpers.arrayElement([{accessToken: faker.word.sample(), email: faker.internet.email(), id: faker.number.int({min: undefined, max: undefined})}, undefined])})
+export const getLoginMock = () => ({
+  data: faker.helpers.arrayElement([
+    {
+      accessToken: faker.word.sample(),
+      email: faker.internet.email(),
+      id: faker.number.int({ min: undefined, max: undefined }),
+    },
+    undefined,
+  ]),
+})
 
-export const getSignupMock = () => ({data: faker.helpers.arrayElement([{message: faker.word.sample()}, undefined])})
+export const getSignupMock = () => ({
+  data: faker.helpers.arrayElement([
+    { message: faker.word.sample() },
+    undefined,
+  ]),
+})
 
 export const getAuthMSW = () => [
-rest.post('*/auth/login', (_req, res, ctx) => {
-        return res(
-          ctx.delay(1000),
-          ctx.status(200, 'Mocked status'),
-ctx.json(getLoginMock()),
-        )
-      }),rest.post('*/auth/signup', (_req, res, ctx) => {
-        return res(
-          ctx.delay(1000),
-          ctx.status(200, 'Mocked status'),
-ctx.json(getSignupMock()),
-        )
-      }),]
+  rest.post('*/auth/login', (_req, res, ctx) => {
+    return res(
+      ctx.delay(1000),
+      ctx.status(200, 'Mocked status'),
+      ctx.json(getLoginMock()),
+    )
+  }),
+  rest.post('*/auth/signup', (_req, res, ctx) => {
+    return res(
+      ctx.delay(1000),
+      ctx.status(200, 'Mocked status'),
+      ctx.json(getSignupMock()),
+    )
+  }),
+]

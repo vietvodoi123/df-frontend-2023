@@ -9,10 +9,10 @@ import { IRootState } from '@/app/store/store'
 import { createBook } from '@/generated/book/book'
 import { notification } from 'antd'
 import { setReload } from '@/app/store/slice/booksSlice'
+import { BookResponse, CreateBookRequest } from '@/generated/model'
 import InputElm from '../../ui/InputElm'
 import ButtonPrimary from '../../ui/ButtonPrimary'
 import { createBookSchema } from '../../validate/bookValidate'
-import { BookResponse, CreateBookRequest } from '@/generated/model'
 
 const CreateModal = () => {
   const dispatch = useDispatch()

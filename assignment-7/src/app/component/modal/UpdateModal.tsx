@@ -8,9 +8,9 @@ import { AiOutlineLoading3Quarters } from 'react-icons/ai'
 import { useDispatch } from 'react-redux'
 import { closeModal } from '@/app/store/slice/modalSlice'
 import { notification } from 'antd'
-import { userSchema } from '../../validate/userValidate'
 import { updateUser } from '@/generated/user/user'
 import { UpdateUserRequest, UserResponse } from '@/generated/model'
+import { userSchema } from '../../validate/userValidate'
 
 const UpdateModal = () => {
   const dispatch = useDispatch()

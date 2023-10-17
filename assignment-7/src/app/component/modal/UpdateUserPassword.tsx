@@ -8,11 +8,10 @@ import { AiOutlineLoading3Quarters } from 'react-icons/ai'
 import { useDispatch } from 'react-redux'
 import { closeModal } from '@/app/store/slice/modalSlice'
 import zxcvbn from 'zxcvbn'
-
 import { notification } from 'antd'
-import { passSchema } from '../../validate/userValidate'
 import { updatePassword } from '@/generated/user/user'
 import { MessageResponse, UpdatePasswordRequest } from '@/generated/model'
+import { passSchema } from '../../validate/userValidate'
 
 const UpdateUserPassword = () => {
   const dispatch = useDispatch()

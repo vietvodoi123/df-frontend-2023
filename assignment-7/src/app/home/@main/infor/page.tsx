@@ -1,6 +1,5 @@
 'use client'
 
-import NotFound from '@/app/not-found'
 import { setUpdate } from '@/app/store/slice/modalSlice'
 import { Me, MeResponse } from '@/generated/model'
 import { getMe } from '@/generated/user/user'

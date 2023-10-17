@@ -9,41 +9,32 @@ import type {
   LoginResponse,
   LoginRequest,
   MessageResponse,
-  SignupRequest
-} from '.././model'
-import { customInstance } from '../../api/Fetcher';
+  SignupRequest,
+} from '../model'
+import { customInstance } from '../../api/Fetcher'
 
-
-  
-  /**
+/**
  * Login to portal by email
  * @summary Login to portal
  */
-export const login = (
-    loginRequest: LoginRequest,
- ) => {
-      return customInstance<LoginResponse>(
-      {url: `/auth/login`, method: 'post',
-      headers: {'Content-Type': 'application/json', },
-      data: loginRequest
-    },
-      );
-    }
-  
+export const login = (loginRequest: LoginRequest) => {
+  return customInstance<LoginResponse>({
+    url: `/auth/login`,
+    method: 'post',
+    headers: { 'Content-Type': 'application/json' },
+    data: loginRequest,
+  })
+}
 
 /**
  * Signup
  * @summary Signup
  */
-export const signup = (
-    signupRequest: SignupRequest,
- ) => {
-      return customInstance<MessageResponse>(
-      {url: `/auth/signup`, method: 'post',
-      headers: {'Content-Type': 'application/json', },
-      data: signupRequest
-    },
-      );
-    }
-  
-
+export const signup = (signupRequest: SignupRequest) => {
+  return customInstance<MessageResponse>({
+    url: `/auth/signup`,
+    method: 'post',
+    headers: { 'Content-Type': 'application/json' },
+    data: signupRequest,
+  })
+}

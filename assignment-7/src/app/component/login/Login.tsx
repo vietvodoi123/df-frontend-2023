@@ -7,16 +7,14 @@ import { Formik } from 'formik'
 import InputElm from '@/app/ui/InputElm'
 import ButtonPrimary from '@/app/ui/ButtonPrimary'
 import { AiOutlineLoading3Quarters } from 'react-icons/ai'
-
 import { loginSchema } from '@/app/validate/loginValidate'
-
-import { login } from '../../../generated/auth/auth'
-import { ErrorDetail, LoginResponse, TopicsResponse } from '@/generated/model'
+import { LoginResponse, TopicsResponse } from '@/generated/model'
 import { getTopics } from '@/generated/topic/topic'
 import { notification } from 'antd'
 import { setTopic } from '@/app/store/slice/booksSlice'
-import { error } from 'console'
 import { signin } from '@/app/store/slice/userSlice'
+import { login } from '../../../generated/auth/auth'
+
 const Login = ({ setTab }: { setTab: (value: number) => void }) => {
   const dispatch = useDispatch()
   const route = useRouter()

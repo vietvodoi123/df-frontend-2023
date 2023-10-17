@@ -1,15 +1,14 @@
 'use client'
 
 import React from 'react'
-
 import { useDispatch, useSelector } from 'react-redux'
 import { closeModal } from '@/app/store/slice/modalSlice'
 import { IRootState } from '@/app/store/store'
 import { notification } from 'antd'
 import { setReload } from '@/app/store/slice/booksSlice'
-import ButtonPrimary from '../../ui/ButtonPrimary'
 import { deleteBook } from '@/generated/book/book'
 import { MessageResponse } from '@/generated/model'
+import ButtonPrimary from '../../ui/ButtonPrimary'
 
 const DeleteModal = () => {
   const dispatch = useDispatch()

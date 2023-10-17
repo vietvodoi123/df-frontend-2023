@@ -6,61 +6,55 @@
  * OpenAPI spec version: 1.0
  */
 import useSwr from 'swr'
-import type {
-  SWRConfiguration,
-  Key
-} from 'swr'
+import type { SWRConfiguration, Key } from 'swr'
 import type {
   MeResponse,
   ErrorResponse,
   UserResponse,
   UpdateUserRequest,
   MessageResponse,
-  UpdatePasswordRequest
-} from '.././model'
-import { customInstance } from '../../api/Fetcher';
+  UpdatePasswordRequest,
+} from '../model'
+import { customInstance } from '../../api/Fetcher'
 
-
-  
-  /**
+/**
  * Retrieve my information
  * @summary Retrieve my information
  */
-export const getMe = (
-    
- ) => {
-      return customInstance<MeResponse>(
-      {url: `/me`, method: 'get'
-    },
-      );
-    }
-  
+export const getMe = () => {
+  return customInstance<MeResponse>({ url: `/me`, method: 'get' })
+}
 
-export const getGetMeKey = () => [`/me`] as const;
+export const getGetMeKey = () => [`/me`] as const
 
-    
 export type GetMeQueryResult = NonNullable<Awaited<ReturnType<typeof getMe>>>
 export type GetMeQueryError = ErrorResponse
 
 /**
  * @summary Retrieve my information
  */
-export const useGetMe = <TError = ErrorResponse>(
-  options?: { swr?:SWRConfiguration<Awaited<ReturnType<typeof getMe>>, TError> & { swrKey?: Key, enabled?: boolean },  }
-
-  ) => {
-
-  const {swr: swrOptions} = options ?? {}
+export const useGetMe = <TError = ErrorResponse>(options?: {
+  swr?: SWRConfiguration<Awaited<ReturnType<typeof getMe>>, TError> & {
+    swrKey?: Key
+    enabled?: boolean
+  }
+}) => {
+  const { swr: swrOptions } = options ?? {}
 
   const isEnabled = swrOptions?.enabled !== false
-    const swrKey = swrOptions?.swrKey ?? (() => isEnabled ? getGetMeKey() : null);
-  const swrFn = () => getMe();
+  const swrKey =
+    swrOptions?.swrKey ?? (() => (isEnabled ? getGetMeKey() : null))
+  const swrFn = () => getMe()
 
-  const query = useSwr<Awaited<ReturnType<typeof swrFn>>, TError>(swrKey, swrFn, swrOptions)
+  const query = useSwr<Awaited<ReturnType<typeof swrFn>>, TError>(
+    swrKey,
+    swrFn,
+    swrOptions,
+  )
 
   return {
     swrKey,
-    ...query
+    ...query,
   }
 }
 
@@ -68,31 +62,26 @@ export const useGetMe = <TError = ErrorResponse>(
  * Update user
  * @summary Update user
  */
-export const updateUser = (
-    updateUserRequest: UpdateUserRequest,
- ) => {
-      return customInstance<UserResponse>(
-      {url: `/users`, method: 'put',
-      headers: {'Content-Type': 'application/json', },
-      data: updateUserRequest
-    },
-      );
-    }
-  
+export const updateUser = (updateUserRequest: UpdateUserRequest) => {
+  return customInstance<UserResponse>({
+    url: `/users`,
+    method: 'put',
+    headers: { 'Content-Type': 'application/json' },
+    data: updateUserRequest,
+  })
+}
 
 /**
  * Update user's password
  * @summary Update user's password
  */
 export const updatePassword = (
-    updatePasswordRequest: UpdatePasswordRequest,
- ) => {
-      return customInstance<MessageResponse>(
-      {url: `/users/password`, method: 'put',
-      headers: {'Content-Type': 'application/json', },
-      data: updatePasswordRequest
-    },
-      );
-    }
-  
-
+  updatePasswordRequest: UpdatePasswordRequest,
+) => {
+  return customInstance<MessageResponse>({
+    url: `/users/password`,
+    method: 'put',
+    headers: { 'Content-Type': 'application/json' },
+    data: updatePasswordRequest,
+  })
+}

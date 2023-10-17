@@ -2,9 +2,11 @@
 
 import { Auth } from '@/generated/model'
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
+
 interface IUserState {
   userCurrent?: Auth
 }
+
 const initialState: IUserState = {}
 
 const userSlice = createSlice({

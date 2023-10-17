@@ -6,11 +6,10 @@ import { Formik } from 'formik'
 import InputElm from '@/app/ui/InputElm'
 import ButtonPrimary from '@/app/ui/ButtonPrimary'
 import { AiOutlineLoading3Quarters } from 'react-icons/ai'
-
 import { notification } from 'antd'
-import { signUpSchema } from '../../validate/loginValidate'
 import { signup } from '@/generated/auth/auth'
 import { MessageResponse } from '@/generated/model'
+import { signUpSchema } from '../../validate/loginValidate'
 
 const Register = ({ setTab }: { setTab: (value: number) => void }) => {
   const checkPasswordStrength = (password: string): string => {
