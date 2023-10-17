@@ -3,6 +3,7 @@
 import { UserApi } from '@/api/UserApi'
 import NotFound from '@/app/not-found'
 import { setUpdate } from '@/app/store/slice/modalSlice'
+import { notification } from 'antd'
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
@@ -14,11 +15,18 @@ function Page() {
   const dispatch = useDispatch()
   const [data, setData] = useState<MeData>()
   useEffect(() => {
-    UserApi.getUser().then((res: ApiResponse<MeData>) => {
-      if (res.data) {
-        setData(res.data)
-      }
-    })
+    UserApi.getUser()
+      .then((res: ApiResponse<MeData>) => {
+        if ('data' in res) {
+          setData(res.data)
+        }
+      })
+      .catch((err: ErrorResponse) => {
+        notification.error({
+          message: err.code,
+          description: err.message,
+        })
+      })
   }, [])
   if (!data) {
     return NotFound

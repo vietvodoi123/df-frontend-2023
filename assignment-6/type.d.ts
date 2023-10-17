@@ -1,3 +1,14 @@
+interface Auth {
+  id?: number
+  email?: string
+  accessToken?: string
+}
+interface UserData {
+  id: number
+  fullName: string
+  email: string
+  avatar: string
+}
 interface IBook {
   id: string
   name: string
@@ -10,12 +21,6 @@ interface ICreateBook {
   topicID: number
 }
 type ThemeType = 'light' | 'dark'
-
-interface UserData {
-  id?: number
-  email?: string
-  accessToken?: string
-}
 interface MeData {
   id: number
   email: string
@@ -28,40 +33,27 @@ interface IUserCreate {
   fullName: string
   password: string
 }
-
-type ApiResponse<T> = {
-  data?: T
-  code?: string
-  error?: string
-  errors?: Array<{ error: string; field: string }>
-  traceId?: string
-  metadata: Metadata
-}
 interface ITopic {
   code: string
   id: number
   name: string
-}
-
-// response
-interface SuccessResponse {
-  data: {
-    message: string
-  }
-  metadata?: Metadata
+} // response
+interface SuccessResponse<T> {
+  data: T
+  metadata?: IMetadata
 }
 interface ErrorResponse {
   code: string
   error: string
   message: string
-  errors: Array<{
-    error: string
-    field: string
-  }>
+  errors: Array<{ error: string; field: string }>
   traceId: string
 }
-
-interface Metadata {
+interface Message {
+  message: string
+}
+type ApiResponse<T> = SuccessResponse<T> | ErrorResponse
+interface IMetadata {
   hasNext: boolean
   page: number
   pageSize: number

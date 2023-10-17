@@ -19,12 +19,12 @@ function Page({ params }: { params: { bookId: string } }) {
   useEffect(() => {
     BookApi.getBookById(parseInt(params.bookId, 10))
       .then((res: ApiResponse<IBook>) => {
-        if (res.data) {
+        if ('data' in res) {
           setData(res.data)
         }
       })
       .catch((err: ErrorResponse) => {
-        notification.error({ message: err.code, description: err.error })
+        notification.error({ message: err.code, description: err.message })
       })
   }, [])
 

@@ -2,7 +2,6 @@
 
 import React from 'react'
 import { Formik } from 'formik'
-import * as yup from 'yup'
 import { AiOutlineLoading3Quarters } from 'react-icons/ai'
 import { useDispatch, useSelector } from 'react-redux'
 import { closeModal } from '@/app/store/slice/modalSlice'
@@ -12,24 +11,10 @@ import { notification } from 'antd'
 import { setReload } from '@/app/store/slice/booksSlice'
 import InputElm from '../../ui/InputElm'
 import ButtonPrimary from '../../ui/ButtonPrimary'
-
+import { createBookSchema } from '../../validate/bookValidate'
 const CreateModal = () => {
   const dispatch = useDispatch()
   const topic = useSelector((state: IRootState) => state.books.topic)
-  const schema = yup.object().shape({
-    author: yup
-      .string()
-      .matches(/^[A-Za-z\s]+$/, 'Tên tác giả chỉ chứa chữ cái và khoảng trắng')
-      .required('Tên tác giả là bắt buộc'),
-    name: yup
-      .string()
-      .min(5, 'Tên sách phải có ít nhất 5 ký tự')
-      .required('Tên sách là bắt buộc'),
-    topic: yup
-      .number()
-      .moreThan(0, 'Hãy chọn 1 chủ đề')
-      .required('Chủ đề sách là bắt buộc'),
-  })
 
   const handleLogin = (
     values: { name: string; author: string; topic: number },
@@ -44,18 +29,18 @@ const CreateModal = () => {
     }
     BookApi.createBook(data)
       .then((res: ApiResponse<IBook>) => {
-        notification.success({
-          message: `Thêm thành công ${res.data?.id}`,
-        })
-        dispatch(setReload())
-        dispatch(closeModal())
+        if ('data' in res) {
+          notification.success({
+            message: `Thêm thành công ${res.data?.id}`,
+          })
+          dispatch(setReload())
+          dispatch(closeModal())
+        }
       })
       .catch((err: ErrorResponse) => {
-        console.log(err)
-
         notification.error({
           message: err.code,
-          description: err.error,
+          description: err.message,
         })
       })
     setSubmitting(false)
@@ -68,7 +53,7 @@ const CreateModal = () => {
         author: '',
         topic: 0,
       }}
-      validationSchema={schema}
+      validationSchema={createBookSchema}
       onSubmit={handleLogin}
     >
       {({

@@ -48,20 +48,18 @@ const DeleteModal = () => {
           onClick={() => {
             if (nameBookDelete && nameBookDelete.id) {
               BookApi.deleteBook(parseInt(nameBookDelete?.id, 10))
-                .then((res: ApiResponse<SuccessResponse>) => {
-                  if (res.data) {
+                .then((res: ApiResponse<Message>) => {
+                  if ('data' in res) {
                     notification.success({
-                      message: 'Xóa thành công!',
+                      message: res.data.message,
                     })
                     dispatch(setReload())
                   }
                 })
                 .catch((error: ErrorResponse) => {
-                  console.log(error)
-
                   notification.error({
                     message: error.code,
-                    description: error.error,
+                    description: error.message,
                   })
                 })
               dispatch(closeModal())

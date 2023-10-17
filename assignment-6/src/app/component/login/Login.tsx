@@ -13,33 +13,19 @@ import { login } from '@/app/store/slice/userSlice'
 import { notification } from 'antd'
 import { TopicApi } from '@/api/TopicApi'
 import { setTopic } from '@/app/store/slice/booksSlice'
-
+import { loginSchema } from '@/app/validate/loginValidate'
 const Login = ({ setTab }: { setTab: (value: number) => void }) => {
   const dispatch = useDispatch()
   const route = useRouter()
 
-  const schema = yup.object().shape({
-    email: yup
-      .string()
-      .email('Email không hợp lệ')
-      .required('Email là bắt buộc'),
-    password: yup
-      .string()
-      .required('Mật khẩu là bắt buộc')
-      .min(8, 'Mật khẩu phải có ít nhất 8 ký tự')
-      .matches(
-        /^(?=.*[A-Z])(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]+$/,
-        'Phải chứa ít nhất 1 ký tự viết hoa và 1 ký tự đặc biệt',
-      ),
-  })
   const handleLogin = async (
     values: { email: string; password: string },
     { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void },
   ) => {
     setSubmitting(true)
     await UserApi.login(values)
-      .then((e: ApiResponse<UserData>) => {
-        if (e.data) {
+      .then((e: ApiResponse<Auth>) => {
+        if ('data' in e) {
           notification.success({
             message: 'Đăng nhập thành công!',
             description: `Xin chào ${e.data.email}`,
@@ -48,7 +34,7 @@ const Login = ({ setTab }: { setTab: (value: number) => void }) => {
           // lay topic
           TopicApi.getTopic()
             .then((res: ApiResponse<ITopic[]>) => {
-              if (res.data) {
+              if ('data' in res) {
                 console.log(res.data)
 
                 dispatch(setTopic(res.data))
@@ -67,7 +53,7 @@ const Login = ({ setTab }: { setTab: (value: number) => void }) => {
       .catch((err: ErrorResponse) => {
         notification.error({
           message: err.code,
-          description: err.error,
+          description: err.message,
         })
       })
 
@@ -80,7 +66,7 @@ const Login = ({ setTab }: { setTab: (value: number) => void }) => {
         password: '',
         email: '',
       }}
-      validationSchema={schema}
+      validationSchema={loginSchema}
       onSubmit={handleLogin}
     >
       {({

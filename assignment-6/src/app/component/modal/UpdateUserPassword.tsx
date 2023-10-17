@@ -1,7 +1,6 @@
 'use client'
 
 import React from 'react'
-import * as yup from 'yup'
 import { Formik } from 'formik'
 import InputElm from '@/app/ui/InputElm'
 import ButtonPrimary from '@/app/ui/ButtonPrimary'
@@ -11,6 +10,7 @@ import { closeModal } from '@/app/store/slice/modalSlice'
 import zxcvbn from 'zxcvbn'
 import { UserApi } from '@/api/UserApi'
 import { notification } from 'antd'
+import { passSchema } from '../../validate/uservalidate'
 
 const UpdateUserPassword = () => {
   const dispatch = useDispatch()
@@ -31,24 +31,7 @@ const UpdateUserPassword = () => {
     }
     return 'Rất mạnh'
   }
-  const schema = yup.object().shape({
-    newPassword: yup
-      .string()
-      .required('Mật khẩu là bắt buộc')
-      .min(8, 'Mật khẩu phải có ít nhất 8 ký tự')
-      .matches(
-        /^(?=.*[A-Z])(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]+$/,
-        'Phải chứa ít nhất 1 ký tự viết hoa và 1 ký tự đặc biệt',
-      ),
-    oldPassword: yup
-      .string()
-      .required('Mật khẩu là bắt buộc')
-      .min(8, 'Mật khẩu phải có ít nhất 8 ký tự')
-      .matches(
-        /^(?=.*[A-Z])(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]+$/,
-        'Phải chứa ít nhất 1 ký tự viết hoa và 1 ký tự đặc biệt',
-      ),
-  })
+
   const handleLogin = (
     values: { oldPassword: string; newPassword: string },
     { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void },
@@ -60,10 +43,10 @@ const UpdateUserPassword = () => {
     form.append('oldPassword', values.oldPassword)
     form.append('newPassword', values.newPassword)
     UserApi.changePass(form)
-      .then((res: ApiResponse<SuccessResponse>) => {
-        if (res.data) {
+      .then((res: ApiResponse<Message>) => {
+        if ('data' in res) {
           notification.success({
-            message: res.data.data.message,
+            message: res.data.message,
           })
           dispatch(closeModal())
         }
@@ -84,7 +67,7 @@ const UpdateUserPassword = () => {
         oldPassword: '',
         newPassword: '',
       }}
-      validationSchema={schema}
+      validationSchema={passSchema}
       onSubmit={handleLogin}
     >
       {({

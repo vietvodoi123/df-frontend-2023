@@ -1,7 +1,6 @@
 'use client'
 
 import React, { ChangeEvent, useState } from 'react'
-import * as yup from 'yup'
 import { Formik } from 'formik'
 import InputElm from '@/app/ui/InputElm'
 import ButtonPrimary from '@/app/ui/ButtonPrimary'
@@ -10,6 +9,7 @@ import { useDispatch } from 'react-redux'
 import { closeModal } from '@/app/store/slice/modalSlice'
 import { UserApi } from '@/api/UserApi'
 import { notification } from 'antd'
+import { userSchema } from '../../validate/uservalidate'
 
 const UpdateModal = () => {
   const dispatch = useDispatch()
@@ -29,12 +29,6 @@ const UpdateModal = () => {
     }
   }
 
-  const schema = yup.object().shape({
-    fullName: yup
-      .string()
-      .required('Tên là bắt buộc')
-      .min(4, 'Tên phải có ít nhất 4 kí tự'),
-  })
   const handleLogin = (
     values: { fullName: string },
     { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void },
@@ -47,7 +41,7 @@ const UpdateModal = () => {
     setSubmitting(true)
     UserApi.updateMe(form)
       .then((res: ApiResponse<UserData>) => {
-        if (res.data) {
+        if ('data' in res) {
           notification.success({
             message: 'Cập nhật thành công!',
           })
@@ -55,8 +49,6 @@ const UpdateModal = () => {
         }
       })
       .catch((err: ErrorResponse) => {
-        console.log(err)
-
         notification.error({
           message: err.code,
           description: err.message,
@@ -70,7 +62,7 @@ const UpdateModal = () => {
       initialValues={{
         fullName: '',
       }}
-      validationSchema={schema}
+      validationSchema={userSchema}
       onSubmit={handleLogin}
     >
       {({

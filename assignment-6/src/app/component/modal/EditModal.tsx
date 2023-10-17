@@ -2,7 +2,6 @@
 
 import React from 'react'
 import { Formik } from 'formik'
-import * as yup from 'yup'
 import { AiOutlineLoading3Quarters } from 'react-icons/ai'
 import { useDispatch, useSelector } from 'react-redux'
 import { IRootState } from '@/app/store/store'
@@ -12,7 +11,7 @@ import { notification } from 'antd'
 import { setReload } from '@/app/store/slice/booksSlice'
 import InputElm from '../../ui/InputElm'
 import ButtonPrimary from '../../ui/ButtonPrimary'
-
+import { createBookSchema } from '../../validate/bookValidate'
 const EditModal = () => {
   const dispatch = useDispatch()
   const edit = useSelector((state: IRootState) => state.modal.edit)
@@ -21,21 +20,6 @@ const EditModal = () => {
   if (!edit) {
     return <div>404</div>
   }
-
-  const schema = yup.object().shape({
-    author: yup
-      .string()
-      .matches(/^[A-Za-z\s]+$/, 'Tên tác giả chỉ chứa chữ cái và khoảng trắng')
-      .required('Tên tác giả là bắt buộc'),
-    name: yup
-      .string()
-      .min(5, 'Tên sách phải có ít nhất 5 ký tự')
-      .required('Tên sách là bắt buộc'),
-    topic: yup
-      .number()
-      .moreThan(0, 'Hãy chọn 1 chủ đề')
-      .required('Chủ đề sách là bắt buộc'),
-  })
 
   const handleLogin = (
     values: { name: string; author: string; topic: number },
@@ -50,18 +34,18 @@ const EditModal = () => {
     }
     BookApi.updateBooks(parseInt(edit.id, 10), data)
       .then((res: ApiResponse<IBook>) => {
-        notification.success({
-          message: `Chỉnh sửa thành công! ${res.data?.id}`,
-        })
-        dispatch(setReload())
-        dispatch(closeModal())
+        if ('data' in res) {
+          notification.success({
+            message: `Chỉnh sửa thành công! ${res.data?.id}`,
+          })
+          dispatch(setReload())
+          dispatch(closeModal())
+        }
       })
       .catch((err: ErrorResponse) => {
-        console.log(err)
-
         notification.error({
           message: err.code,
-          description: err.error,
+          description: err.message,
         })
       })
     setSubmitting(false)
@@ -74,7 +58,7 @@ const EditModal = () => {
         author: edit.author,
         topic: edit.topic.id,
       }}
-      validationSchema={schema}
+      validationSchema={createBookSchema}
       onSubmit={handleLogin}
     >
       {({

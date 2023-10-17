@@ -6,6 +6,7 @@ import Pagnation from '@/app/component/Pagnation'
 import { setNameBookDelete } from '@/app/store/slice/booksSlice'
 import { setDel, setEdit } from '@/app/store/slice/modalSlice'
 import { IRootState } from '@/app/store/store'
+import { notification } from 'antd'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -24,16 +25,21 @@ function Main() {
       page: books.currentPage,
       pageSize: 5,
       query: books.query,
-    }).then((res: ApiResponse<IBook[]>) => {
-      if (res.data) {
-        setData(res.data)
-        console.log(res.data)
-      }
-      if (res.metadata) {
-        setTotalPage(res.metadata.totalPages)
-        console.log(res.metadata.totalPages)
-      }
     })
+      .then((res: ApiResponse<IBook[]>) => {
+        if ('data' in res) {
+          setData(res.data)
+        }
+        if ('metadata' in res) {
+          setTotalPage(res.metadata?.totalPages)
+        }
+      })
+      .catch((err: ErrorResponse) => {
+        notification.error({
+          message: err.code,
+          description: err.message,
+        })
+      })
     setLoading(false)
   }, [books.reload, books.currentPage, books.query])
   return (

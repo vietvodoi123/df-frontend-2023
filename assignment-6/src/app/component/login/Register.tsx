@@ -2,13 +2,13 @@
 
 import React from 'react'
 import zxcvbn from 'zxcvbn'
-import * as yup from 'yup'
 import { Formik } from 'formik'
 import InputElm from '@/app/ui/InputElm'
 import ButtonPrimary from '@/app/ui/ButtonPrimary'
 import { AiOutlineLoading3Quarters } from 'react-icons/ai'
 import { UserApi } from '@/api/UserApi'
 import { notification } from 'antd'
+import { signUpSchema } from '../../validate/loginValidate'
 
 const Register = ({ setTab }: { setTab: (value: number) => void }) => {
   const checkPasswordStrength = (password: string): string => {
@@ -29,50 +29,26 @@ const Register = ({ setTab }: { setTab: (value: number) => void }) => {
     return 'Rất mạnh'
   }
 
-  const schema = yup.object().shape({
-    confirmPass: yup
-      .string()
-      .required('Vui lòng nhập lại mật khẩu!')
-      .equals(
-        [yup.ref('password'), null],
-        'Xác nhận mật khẩu không trùng khớp',
-      ),
-    email: yup
-      .string()
-      .email('Email không hợp lệ')
-      .required('Email là bắt buộc'),
-    fullName: yup
-      .string()
-      .required('Tên là bắt buộc')
-      .min(4, 'Tên phải có ít nhất 4 kí tự'),
-
-    password: yup
-      .string()
-      .required('Mật khẩu là bắt buộc')
-      .min(8, 'Mật khẩu phải có ít nhất 8 ký tự')
-      .matches(
-        /^(?=.*[A-Z])(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]+$/,
-        'Phải chứa ít nhất 1 ký tự viết hoa và 1 ký tự đặc biệt',
-      ),
-  })
   const handleLogin = (
     values: { email: string; password: string; fullName: string },
     { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void },
   ) => {
     setSubmitting(true)
     UserApi.signup(values)
-      .then((res: ApiResponse<SuccessResponse>) => {
-        notification.success({
-          message: res.data?.data.message,
-        })
-        setTab(0)
+      .then((res: ApiResponse<Message>) => {
+        if ('data' in res) {
+          notification.success({
+            message: res.data.message,
+          })
+          setTab(0)
+        }
       })
-      .catch((err) =>
+      .catch((err: ErrorResponse) => {
         notification.error({
           message: err.code,
-          description: err.error,
-        }),
-      )
+          description: err.message,
+        })
+      })
     setSubmitting(false)
   }
 
@@ -84,7 +60,7 @@ const Register = ({ setTab }: { setTab: (value: number) => void }) => {
         email: '',
         confirmPass: '',
       }}
-      validationSchema={schema}
+      validationSchema={signUpSchema}
       onSubmit={handleLogin}
     >
       {({

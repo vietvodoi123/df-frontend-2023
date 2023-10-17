@@ -10,7 +10,7 @@ export const UserApi = {
   login(payload: ILoginBody): Promise<ApiResponse<UserData>> {
     return axiosClient.post('/auth/login', payload)
   },
-  signup(payload: IUserCreate): Promise<ApiResponse<SuccessResponse>> {
+  signup(payload: IUserCreate): Promise<ApiResponse<Message>> {
     return axiosClient.post('/auth/signup', payload)
   },
   isLogin() {
@@ -24,7 +24,7 @@ export const UserApi = {
   updateMe(payload: FormData): Promise<ApiResponse<UserData>> {
     return axiosClient.put('/users', payload)
   },
-  changePass(payload: FormData): Promise<ApiResponse<SuccessResponse>> {
+  changePass(payload: FormData): Promise<ApiResponse<Message>> {
     return axiosClient.put('/users/password', payload)
   },
 }

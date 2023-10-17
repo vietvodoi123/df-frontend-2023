@@ -19,7 +19,7 @@ export const BookApi = {
   updateBooks(id: number, payload: ICreateBook): Promise<ApiResponse<IBook>> {
     return axiosClient.put(`/books/${id}`, payload)
   },
-  deleteBook(id: number): Promise<ApiResponse<SuccessResponse>> {
+  deleteBook(id: number): Promise<ApiResponse<Message>> {
     return axiosClient.delete(`/books/${id}`)
   },
   getBookById(id: number): Promise<ApiResponse<IBook>> {

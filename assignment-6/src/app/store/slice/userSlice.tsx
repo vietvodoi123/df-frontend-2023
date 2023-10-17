@@ -3,7 +3,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 
 interface IUserState {
-  userCurrent?: UserData
+  userCurrent?: Auth
 }
 const initialState: IUserState = {}
 
@@ -11,7 +11,7 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    login: (state, actions: PayloadAction<UserData>) => {
+    login: (state, actions: PayloadAction<Auth>) => {
       state.userCurrent = actions.payload
     },
     logout: () => {
