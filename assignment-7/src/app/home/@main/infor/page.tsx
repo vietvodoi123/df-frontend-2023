@@ -13,19 +13,23 @@ import { useDispatch } from 'react-redux'
 
 function Page() {
   const dispatch = useDispatch()
+  const [loading, setLoading] = useState<boolean>(false)
   const [data, setData] = useState<Me>()
   useEffect(() => {
+    setLoading(true)
     getMe()
       .then((res: MeResponse) => {
         if (res.data) {
           setData(res.data)
         }
+        setLoading(false)
       })
       .catch((error: ErrorResponse) => {
         notification.error({
           message: error.error,
           description: error.message,
         })
+        setLoading(false)
       })
   }, [])
   return (
@@ -58,10 +62,10 @@ function Page() {
       />
       <div>
         <h1 className="text-[18px] mb-m20">
-          Full Name: <b>{data?.fullName}</b>
+          Full Name: <b>{loading ? 'loading...!' : data?.fullName}</b>
         </h1>
         <p className="text-[18px]">
-          Email: <b>{data?.email}</b>
+          Email: <b>{loading ? 'loading...!' : data?.email}</b>
         </p>
       </div>
     </div>

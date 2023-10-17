@@ -17,8 +17,8 @@ function Main() {
   const [loading, setLoading] = useState<boolean>(false)
   const [data, setData] = useState<IBook[]>()
   const [totalPages, setTotalPage] = useState<number>()
-
   const books = useSelector((state: IRootState) => state.books)
+
   useEffect(() => {
     setLoading(true)
     BookApi.getBooks({
@@ -33,14 +33,15 @@ function Main() {
         if ('metadata' in res) {
           setTotalPage(res.metadata?.totalPages)
         }
+        setLoading(false)
       })
       .catch((err: ErrorResponse) => {
         notification.error({
           message: err.code,
           description: err.message,
         })
+        setLoading(false)
       })
-    setLoading(false)
   }, [books.reload, books.currentPage, books.query])
   return (
     <main className=" mt-m50">

@@ -38,16 +38,17 @@ const Login = ({ setTab }: { setTab: (value: number) => void }) => {
             if (res.data) {
               dispatch(setTopic(res.data))
             }
+            setSubmitting(false)
           })
           .catch((error: ErrorResponse) => {
             notification.error({
               message: error.error,
               description: error.message,
             })
+            setSubmitting(false)
           })
       }
     })
-    setSubmitting(false)
   }
 
   return (

@@ -50,16 +50,17 @@ const UpdateUserPassword = () => {
             notification.success({
               message: res.data.message,
             })
+            dispatch(closeModal())
           }
+          setSubmitting(false)
         })
         .catch((error: ErrorResponse) => {
           notification.error({
             message: error.error,
             description: error.message,
           })
+          setSubmitting(false)
         })
-
-      setSubmitting(false)
     }
   }
 

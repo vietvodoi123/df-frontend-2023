@@ -5,7 +5,6 @@ import { setNameBookDelete } from '@/app/store/slice/booksSlice'
 import { setDel } from '@/app/store/slice/modalSlice'
 import { getBook } from '@/generated/book/book'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { AiOutlineLeft } from 'react-icons/ai'
 import { useDispatch } from 'react-redux'
@@ -13,7 +12,6 @@ import { Book, BookResponse } from '@/generated/model'
 import { notification } from 'antd'
 
 function Page({ params }: { params: { bookId: string } }) {
-  const router = useRouter()
   const dispatch = useDispatch()
   const [data, setData] = useState<Book>()
 
@@ -40,7 +38,6 @@ function Page({ params }: { params: { bookId: string } }) {
     if (data) {
       dispatch(setDel(true))
       dispatch(setNameBookDelete(data))
-      router.push('/home')
     }
   }
 
@@ -59,7 +56,7 @@ function Page({ params }: { params: { bookId: string } }) {
         <b>Author:</b> {data.author}
       </p>
       <p className="text-[18px] mb-m30">
-        <b>Topic:</b> {data.topic?.name}
+        <b>Topic:</b> {data.topic?.name ? data.topic.name : 'lodaing...!'}
       </p>
       <button onClick={onDelete} className=" text-primary font-bold underline ">
         Delete

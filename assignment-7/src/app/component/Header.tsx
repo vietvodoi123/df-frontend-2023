@@ -96,7 +96,7 @@ const Header: React.FC = () => {
               className="flex justify-between items-center gap-g10"
             >
               <Image src="/user.png" alt="avatar" width={40} height={40} />
-              <p className="name">{name?.email}</p>
+              <p className="name">{name?.email ? name.email : 'loading...!'}</p>
             </div>
             {openSubMenu && subMenu}
           </li>

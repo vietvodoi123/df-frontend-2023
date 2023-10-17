@@ -18,9 +18,15 @@ function Main() {
   const [loading, setLoading] = useState<boolean>(false)
   const [data, setData] = useState<Book[]>()
   const [totalPages, setTotalPage] = useState<number>()
-
   const books = useSelector((state: IRootState) => state.books)
+  const token = useSelector(
+    (state: IRootState) => state.user.userCurrent?.accessToken,
+  )
+
   useEffect(() => {
+    if (!token) {
+      router.push('/')
+    }
     setLoading(true)
     getBooks({
       page: books.currentPage,
@@ -34,16 +40,18 @@ function Main() {
         if (res.metadata) {
           setTotalPage(res.metadata.totalPages)
         }
+        setLoading(false)
       })
       .catch((error: ErrorResponse) => {
         notification.error({
           message: error.error,
           description: error.message,
         })
+        router.push('/')
+        setLoading(false)
       })
-
-    setLoading(false)
   }, [books.reload, books.currentPage, books.query])
+
   return (
     <main className=" mt-m50">
       <div className=" w-[94%] mx-auto bg-white dark:bg-bgElm p-p30px rounded-md shadow-md">
@@ -78,7 +86,7 @@ function Main() {
                       {item.author}
                     </td>
                     <td className="border-border border-[2px] border-solid">
-                      {item.topic?.name}
+                      {item.topic?.name ? item.topic.name : 'loading...!'}
                     </td>
                     <td className="border-border border-[2px] border-solid">
                       <button

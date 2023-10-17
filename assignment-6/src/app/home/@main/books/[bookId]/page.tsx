@@ -6,13 +6,11 @@ import { setNameBookDelete } from '@/app/store/slice/booksSlice'
 import { setDel } from '@/app/store/slice/modalSlice'
 import { notification } from 'antd'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { AiOutlineLeft } from 'react-icons/ai'
 import { useDispatch } from 'react-redux'
 
 function Page({ params }: { params: { bookId: string } }) {
-  const router = useRouter()
   const dispatch = useDispatch()
   const [data, setData] = useState<IBook>()
 
@@ -36,7 +34,6 @@ function Page({ params }: { params: { bookId: string } }) {
     if (data) {
       dispatch(setDel(true))
       dispatch(setNameBookDelete(data))
-      router.push('/home')
     }
   }
 

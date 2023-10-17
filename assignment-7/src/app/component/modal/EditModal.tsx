@@ -49,6 +49,7 @@ const EditModal = () => {
             dispatch(setReload())
             dispatch(closeModal())
           }
+          setSubmitting(false)
         })
         .catch((error: ErrorResponse) => {
           console.log(error)
@@ -57,9 +58,9 @@ const EditModal = () => {
             message: error.error,
             description: error.message,
           })
+          setSubmitting(false)
         })
     }
-    setSubmitting(false)
   }
 
   return (

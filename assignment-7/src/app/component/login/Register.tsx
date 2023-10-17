@@ -43,14 +43,15 @@ const Register = ({ setTab }: { setTab: (value: number) => void }) => {
           })
           setTab(0)
         }
+        setSubmitting(false)
       })
       .catch((error: ErrorResponse) => {
         notification.error({
           message: error.error,
           description: error.message,
         })
+        setSubmitting(false)
       })
-    setSubmitting(false)
   }
 
   return (

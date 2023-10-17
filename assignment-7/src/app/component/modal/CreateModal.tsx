@@ -36,16 +36,17 @@ const CreateModal = () => {
             message: 'Thêm thành công!',
           })
           dispatch(setReload())
+          dispatch(closeModal())
         }
+        setSubmitting(false)
       })
       .catch((error: ErrorResponse) => {
         notification.error({
           message: error.error,
           description: error.message,
         })
+        setSubmitting(false)
       })
-
-    setSubmitting(false)
   }
 
   return (
